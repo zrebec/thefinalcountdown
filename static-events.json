@@ -1,0 +1,271 @@
+{
+  "version": "tfc-v1",
+  "staticEvents": [
+    {
+      "id": "sk-holidays",
+      "name": "Slovenské sviatky",
+      "color": "#7dffa6",
+      "events": [
+        {
+          "id": "sk-2026-01-01",
+          "name": "Deň vzniku Slovenskej republiky",
+          "date": "2026-01-01",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-01-06",
+          "name": "Zjavenie Pána (Traja králi)",
+          "date": "2026-01-06",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-04-03",
+          "name": "Veľký piatok",
+          "date": "2026-04-03",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-04-06",
+          "name": "Veľkonočný pondelok",
+          "date": "2026-04-06",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-05-01",
+          "name": "Sviatok práce",
+          "date": "2026-05-01",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-05-08",
+          "name": "Deň víťazstva nad fašizmom",
+          "date": "2026-05-08",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-07-05",
+          "name": "Sviatok svätého Cyrila a svätého Metoda",
+          "date": "2026-07-05",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-08-29",
+          "name": "Výročie SNP",
+          "date": "2026-08-29",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-09-15",
+          "name": "Sedembolestná Panna Mária",
+          "date": "2026-09-15",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-11-01",
+          "name": "Sviatok všetkých svätých",
+          "date": "2026-11-01",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-12-24",
+          "name": "Štedrý deň",
+          "date": "2026-12-24",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-12-25",
+          "name": "Prvý sviatok vianočný",
+          "date": "2026-12-25",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        },
+        {
+          "id": "sk-2026-12-26",
+          "name": "Druhý sviatok vianočný",
+          "date": "2026-12-26",
+          "time": "00:00",
+          "timeZone": "Europe/Bratislava"
+        }
+      ]
+    },
+    {
+      "id": "f1",
+      "name": "Kalendár F1",
+      "color": "#ff4b4b",
+      "events": [
+        {
+          "id": "f1-2026-australia",
+          "name": "VC Austrálie",
+          "date": "2026-03-08",
+          "time": "15:00",
+          "timeZone": "Australia/Melbourne"
+        },
+        {
+          "id": "f1-2026-china",
+          "name": "VC Číny",
+          "date": "2026-03-15",
+          "time": "15:00",
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "f1-2026-japan",
+          "name": "VC Japonska",
+          "date": "2026-03-29",
+          "time": "14:00",
+          "timeZone": "Asia/Tokyo"
+        },
+        {
+          "id": "f1-2026-miami",
+          "name": "VC Miami",
+          "date": "2026-05-03",
+          "time": "16:00",
+          "timeZone": "America/New_York"
+        },
+        {
+          "id": "f1-2026-canada",
+          "name": "VC Kanady",
+          "date": "2026-05-24",
+          "time": "14:00",
+          "timeZone": "America/Toronto"
+        },
+        {
+          "id": "f1-2026-monaco",
+          "name": "VC Monaka",
+          "date": "2026-06-07",
+          "time": "15:00",
+          "timeZone": "Europe/Monaco"
+        },
+        {
+          "id": "f1-2026-barcelona",
+          "name": "VC Barcelona-Catalunya",
+          "date": "2026-06-14",
+          "time": "15:00",
+          "timeZone": "Europe/Madrid"
+        },
+        {
+          "id": "f1-2026-austria",
+          "name": "VC Rakúska",
+          "date": "2026-06-28",
+          "time": "15:00",
+          "timeZone": "Europe/Vienna"
+        },
+        {
+          "id": "f1-2026-britain",
+          "name": "VC Veľkej Británie",
+          "date": "2026-07-05",
+          "time": "15:00",
+          "timeZone": "Europe/London"
+        },
+        {
+          "id": "f1-2026-belgium",
+          "name": "VC Belgicka",
+          "date": "2026-07-19",
+          "time": "15:00",
+          "timeZone": "Europe/Brussels"
+        },
+        {
+          "id": "f1-2026-hungary",
+          "name": "VC Maďarska",
+          "date": "2026-07-26",
+          "time": "15:00",
+          "timeZone": "Europe/Budapest"
+        },
+        {
+          "id": "f1-2026-netherlands",
+          "name": "VC Holandska",
+          "date": "2026-08-23",
+          "time": "15:00",
+          "timeZone": "Europe/Amsterdam"
+        },
+        {
+          "id": "f1-2026-italy",
+          "name": "VC Talianska",
+          "date": "2026-09-06",
+          "time": "15:00",
+          "timeZone": "Europe/Rome"
+        },
+        {
+          "id": "f1-2026-madrid",
+          "name": "VC Španielska (Madrid)",
+          "date": "2026-09-13",
+          "time": "15:00",
+          "timeZone": "Europe/Madrid"
+        },
+        {
+          "id": "f1-2026-azerbaijan",
+          "name": "VC Azerbajdžanu",
+          "date": "2026-09-26",
+          "time": "15:00",
+          "timeZone": "Asia/Baku"
+        },
+        {
+          "id": "f1-2026-bahrain-malaysia",
+          "name": "VC Bahrajnu v Malajzii",
+          "date": "2026-10-04",
+          "time": "15:00",
+          "timeZone": "Asia/Kuala_Lumpur"
+        },
+        {
+          "id": "f1-2026-singapore",
+          "name": "VC Singapuru",
+          "date": "2026-10-11",
+          "time": "20:00",
+          "timeZone": "Asia/Singapore"
+        },
+        {
+          "id": "f1-2026-usa",
+          "name": "VC USA",
+          "date": "2026-10-25",
+          "time": "14:00",
+          "timeZone": "America/Chicago"
+        },
+        {
+          "id": "f1-2026-mexico",
+          "name": "VC Mexika",
+          "date": "2026-11-01",
+          "time": "14:00",
+          "timeZone": "America/Mexico_City"
+        },
+        {
+          "id": "f1-2026-brazil",
+          "name": "VC Brazílie",
+          "date": "2026-11-08",
+          "time": "14:00",
+          "timeZone": "America/Sao_Paulo"
+        },
+        {
+          "id": "f1-2026-vegas",
+          "name": "VC Las Vegas",
+          "date": "2026-11-21",
+          "time": "20:00",
+          "timeZone": "America/Los_Angeles"
+        },
+        {
+          "id": "f1-2026-qatar",
+          "name": "VC Kataru",
+          "date": "2026-11-29",
+          "time": "16:00",
+          "timeZone": "Asia/Qatar"
+        },
+        {
+          "id": "f1-2026-abudhabi",
+          "name": "VC Abú Zabí",
+          "date": "2026-12-06",
+          "time": "17:00",
+          "timeZone": "Asia/Dubai"
+        }
+      ]
+    }
+  ]
+}
