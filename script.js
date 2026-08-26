@@ -170,10 +170,10 @@
         </section>
 
         <section class="panel" data-panel="data">
-          <p class="lede" style="margin-bottom:16px">Export stiahne JSON s udalosťami tejto aplikácie. Import po kontrole prepíše uložený obsah.</p>
+          <p class="lede" style="margin-bottom:16px">Export stiahne JSON alebo iCal. Import po kontrole prepíše uložený obsah.</p>
           <div class="data-grid">
             <article class="data-card">
-              <h2>Export</h2>
+              <h2>Export JSON</h2>
               <p>Stiahne aktuálnu databázu z tohto prehliadača.</p>
               <div class="export-actions">
                 <a class="btn btn-primary" id="btn-export" download="the-final-countdown.json" target="_blank" rel="noopener">${ICON.down} Stiahnuť JSON</a>
@@ -181,12 +181,23 @@
               </div>
             </article>
             <article class="data-card">
-              <h2>Import</h2>
+              <h2>Import JSON</h2>
               <p>Načíta súbor, overí schému a po potvrdení nahradí existujúce dáta.</p>
               <label class="btn btn-ghost file-btn">
                 ${ICON.up} Vybrať JSON
                 <input id="file-import" type="file" accept="application/json,.json">
               </label>
+            </article>
+            <article class="data-card">
+              <h2>Export iCal</h2>
+              <p>Stiahne .ics pre kalendár v telefóne. Len aktuálne odpočty (budúce a TERAZ!).</p>
+              <label class="check-row">
+                <input type="checkbox" id="toggle-ical-static">
+                <span>Aj statické udalosti</span>
+              </label>
+              <div class="export-actions">
+                <a class="btn btn-primary" id="btn-export-ics" download="the-final-countdown.ics" target="_blank" rel="noopener">${ICON.down} Stiahnuť iCal</a>
+              </div>
             </article>
           </div>
         </section>
@@ -235,6 +246,9 @@
     onDocClick: null,
     exportUrl: null,
     exportText: "",
+    icsUrl: null,
+    icsText: "",
+    exportKind: "json",
     listYear: new Date().getFullYear(),
     editId: "",
     onHashChange: null,
@@ -776,7 +790,10 @@
       btn.setAttribute("aria-current", btn.dataset.nav === view ? "page" : "false");
     });
     if (view === "list") renderList();
-    if (view === "data") prepareExportLink();
+    if (view === "data") {
+      prepareExportLink();
+      prepareIcalLink();
+    }
   }
 
   function fillFormFromEvent(event) {
@@ -974,6 +991,103 @@
     );
   }
 
+
+  function icalEscape(value) {
+    return String(value)
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,")
+      .replace(/\r\n|\n|\r/g, "\\n");
+  }
+
+  function icalFold(line) {
+    const encoder = new TextEncoder();
+    if (encoder.encode(line).length <= 75) return line;
+    let out = "";
+    let rest = line;
+    let first = true;
+    while (rest.length) {
+      const limit = first ? 75 : 74;
+      let take = Math.min(rest.length, limit);
+      while (take > 1 && encoder.encode(rest.slice(0, take)).length > limit) take -= 1;
+      out += (first ? "" : "\r\n ") + rest.slice(0, take);
+      rest = rest.slice(take);
+      first = false;
+    }
+    return out;
+  }
+
+  function icalUtcStamp(ms) {
+    const d = new Date(ms);
+    return (
+      `${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}` +
+      `T${pad2(d.getUTCHours())}${pad2(d.getUTCMinutes())}${pad2(d.getUTCSeconds())}Z`
+    );
+  }
+
+  function icalLocalStamp(dateStr, timeStr) {
+    const [year, month, day] = String(dateStr).split("-");
+    const [hour, minute] = String(timeStr).split(":");
+    return `${year}${month}${day}T${hour}${minute}00`;
+  }
+
+  function icalDateStamp(dateStr) {
+    return String(dateStr).replace(/-/g, "");
+  }
+
+  function isAllDayEvent(event) {
+    return String(event.time || "") === "00:00";
+  }
+
+  function icalEvents(includeStatic) {
+    const year = String(new Date().getFullYear());
+    const now = Date.now();
+    let list = state.events.slice();
+    if (includeStatic) {
+      list = list.concat(state.staticEvents.filter((event) => String(event.date).startsWith(year)));
+    }
+    return list
+      .map((event) => ({ event, ...eventPhase(event, now) }))
+      .filter(({ phase }) => phase !== "past")
+      .sort((a, b) => a.at - b.at)
+      .map(({ event }) => event);
+  }
+
+  function buildIcalText(includeStatic) {
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//The Final Countdown//SK",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "X-WR-CALNAME:The Final Countdown",
+    ];
+    icalEvents(includeStatic).forEach((event) => {
+      const safeId = String(event.id || "event").replace(/[^A-Za-z0-9._-]/g, "-");
+      const tz = isValidTimeZone(event.timeZone) ? event.timeZone : "UTC";
+      const note = eventNote(event);
+      lines.push("BEGIN:VEVENT");
+      lines.push(`UID:${safeId}@thefinalcountdown.local`);
+      lines.push(`DTSTAMP:${icalUtcStamp(Date.now())}`);
+      lines.push(icalFold(`SUMMARY:${icalEscape(event.name)}`));
+      if (isAllDayEvent(event)) {
+        lines.push(`DTSTART;VALUE=DATE:${icalDateStamp(event.date)}`);
+        lines.push(`DTEND;VALUE=DATE:${icalDateStamp(nextIsoDate(event.date))}`);
+        lines.push("TRANSP:TRANSPARENT");
+      } else {
+        const end = formatWall(eventInstant(event) + 3600 * 1000, tz);
+        lines.push(`DTSTART;TZID=${tz}:${icalLocalStamp(event.date, event.time)}`);
+        lines.push(`DTEND;TZID=${tz}:${icalLocalStamp(end.date, end.time)}`);
+        lines.push("TRANSP:OPAQUE");
+      }
+      if (note) lines.push(icalFold(`DESCRIPTION:${icalEscape(note)}`));
+      if (event.calendar) lines.push(icalFold(`CATEGORIES:${icalEscape(event.calendar)}`));
+      lines.push("END:VEVENT");
+    });
+    lines.push("END:VCALENDAR");
+    return `${lines.join("\r\n")}\r\n`;
+  }
+
   function inEmbeddedFrame() {
     try {
       return window.self !== window.top;
@@ -1028,16 +1142,66 @@
     return { url, text, filename, blob };
   }
 
+  function showExportDialog(kind) {
+    state.exportKind = kind;
+    const dlg = $("#tfc-export-dialog");
+    const title = $("#tfc-export-title");
+    const copyBtn = $("#btn-copy-json");
+    const real = $("#export-real-link");
+    if (title) title.textContent = kind === "ics" ? "Uložiť iCal" : "Uložiť JSON";
+    if (copyBtn) copyBtn.textContent = kind === "ics" ? "Kopírovať iCal" : "Kopírovať JSON";
+    if (real) {
+      if (kind === "ics") {
+        real.setAttribute("download", "the-final-countdown.ics");
+        if (state.icsUrl) real.href = state.icsUrl;
+      } else {
+        real.setAttribute("download", "the-final-countdown.json");
+        if (state.exportUrl) real.href = state.exportUrl;
+      }
+    }
+    if (dlg && !dlg.open) dlg.showModal();
+  }
+
   function onExportClick() {
     if (!state.exportUrl) prepareExportLink();
     if (inEmbeddedFrame()) {
-      setTimeout(() => {
-        const dlg = $("#tfc-export-dialog");
-        if (dlg && !dlg.open) dlg.showModal();
-      }, 400);
+      setTimeout(() => showExportDialog("json"), 400);
       return;
     }
     showToast("JSON sa ukladá…");
+  }
+
+  function revokeIcsUrl() {
+    if (state.icsUrl && state.icsUrl.startsWith("blob:")) URL.revokeObjectURL(state.icsUrl);
+    state.icsUrl = null;
+  }
+
+  function prepareIcalLink() {
+    const filename = "the-final-countdown.ics";
+    const includeStatic = Boolean($("#toggle-ical-static") && $("#toggle-ical-static").checked);
+    const text = buildIcalText(includeStatic);
+    const blob = new Blob([text], { type: "text/calendar;charset=utf-8" });
+    revokeIcsUrl();
+    const url = URL.createObjectURL(blob);
+    state.icsUrl = url;
+    state.icsText = text;
+    const main = $("#btn-export-ics");
+    if (main) {
+      main.href = url;
+      main.setAttribute("download", filename);
+      main.setAttribute("target", "_blank");
+      main.setAttribute("rel", "noopener");
+    }
+    return { url, text, filename };
+  }
+
+  function onIcalClick() {
+    prepareIcalLink();
+    if (inEmbeddedFrame()) {
+      setTimeout(() => showExportDialog("ics"), 400);
+      return;
+    }
+    showToast("iCal sa ukladá…");
   }
 
   function validateImport(data) {
@@ -1181,14 +1345,22 @@
       if (delBtn) onDelete(delBtn.dataset.delete);
     });
     $("#btn-export").addEventListener("click", onExportClick);
+    const icsBtn = $("#btn-export-ics");
+    if (icsBtn) {
+      icsBtn.addEventListener("click", onIcalClick);
+      icsBtn.addEventListener("pointerdown", prepareIcalLink);
+    }
+    const icsStatic = $("#toggle-ical-static");
+    if (icsStatic) icsStatic.addEventListener("change", prepareIcalLink);
     $("#btn-copy-export").addEventListener("click", async () => {
       prepareExportLink();
       const ok = await copyText(state.exportText);
       showToast(ok ? "JSON je v schránke." : "Kopírovanie sa nepodarilo.");
     });
     $("#btn-copy-json").addEventListener("click", async () => {
-      const ok = await copyText(state.exportText || buildExportText());
-      showToast(ok ? "JSON je v schránke." : "Kopírovanie sa nepodarilo.");
+      const text = state.exportKind === "ics" ? state.icsText || buildIcalText(Boolean($("#toggle-ical-static") && $("#toggle-ical-static").checked)) : state.exportText || buildExportText();
+      const ok = await copyText(text);
+      showToast(ok ? (state.exportKind === "ics" ? "iCal je v schránke." : "JSON je v schránke.") : "Kopírovanie sa nepodarilo.");
     });
     $("#btn-close-export").addEventListener("click", () => {
       $("#tfc-export-dialog").close();
@@ -1348,7 +1520,7 @@
   }
 
   async function loadStaticEvents() {
-    const urls = ["/static-events.json?v=tfc8", "static-events.json?v=tfc8"];
+    const urls = ["/static-events.json?v=tfc9", "static-events.json?v=tfc9"];
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "reload" });

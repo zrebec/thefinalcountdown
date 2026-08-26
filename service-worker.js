@@ -1,4 +1,4 @@
-const CACHE_NAME = "tfc-v8";
+const CACHE_NAME = "tfc-v9";
 const ASSETS = [
   "/",
   "/style.css",
