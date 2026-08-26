@@ -4,6 +4,8 @@
     timeFormat: "tfc:timeFormat",
     timezones: "tfc:timezones",
     showStatic: "tfc:showStatic",
+    lastView: "tfc:lastView",
+    formDraft: "tfc:formDraft",
   };
   const SCHEMA_VERSION = 1;
   const TZ_ALIASES = {
@@ -121,6 +123,10 @@
             <div class="form-head">
               <h2 class="brand-title" id="form-title" style="font-size:1.25rem">Nová udalosť</h2>
               <p id="form-lede">Povinný je názov, dátum, čas aj IANA zóna. Odpočet zohľadní letný čas zvolenej zóny.</p>
+              <div class="draft-bar" id="draft-bar" hidden>
+                <span>Rozpracované</span>
+                <button type="button" class="btn btn-ghost" id="btn-discard-draft">Zahodiť</button>
+              </div>
               <div class="field">
                 <span class="field-label">Formát času pri zadávaní</span>
                 <div class="seg" role="radiogroup" aria-label="Formát času">
@@ -252,7 +258,13 @@
     listYear: new Date().getFullYear(),
     editId: "",
     onHashChange: null,
+    onPopState: null,
+    onPageHide: null,
+    onVisibility: null,
     hashLock: false,
+    draftLock: false,
+    draftTimer: null,
+    formClean: null,
   };
 
   function $(sel, root = state.root) {
@@ -290,7 +302,11 @@
   }
 
   function writeJson(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      /* quota / private mode */
+    }
   }
 
   function loadEvents() {
@@ -597,6 +613,7 @@
     $("#f-tz").value = zone;
     $("#tz-list").hidden = true;
     setFieldError("tz", "");
+    if (!state.draftLock) scheduleFormDraftSave();
   }
 
   function convertHourFields(from, to) {
@@ -755,6 +772,10 @@
     if (crossed) renderList();
   }
 
+  function hashIsEmpty() {
+    return !(location.hash || "").replace(/^#/, "").trim();
+  }
+
   function parseHash() {
     const raw = decodeURIComponent((location.hash || "").replace(/^#/, "").trim());
     if (!raw || raw === "odpocty" || raw === "list") return { view: "list", editId: "" };
@@ -774,11 +795,187 @@
     const hash = hashFor(view, editId);
     if (location.hash === hash) return;
     state.hashLock = true;
-    if (push) history.pushState(null, "", hash);
-    else history.replaceState(null, "", hash);
+    const url = `${location.pathname}${location.search}${hash}`;
+    if (push) history.pushState(null, "", url);
+    else history.replaceState(null, "", url);
     queueMicrotask(() => {
       state.hashLock = false;
     });
+  }
+
+  function persistLastView() {
+    writeJson(KEYS.lastView, {
+      view: state.view,
+      editId: state.editId || "",
+      subtab: state.subtab === "past" ? "past" : "upcoming",
+      savedAt: new Date().toISOString(),
+    });
+  }
+
+  function loadLastView() {
+    const data = readJson(KEYS.lastView, null);
+    if (!data || typeof data !== "object") {
+      return { view: "list", editId: "", subtab: "upcoming" };
+    }
+    const view = data.view === "new" || data.view === "data" || data.view === "list" ? data.view : "list";
+    const editId = view === "new" && typeof data.editId === "string" ? data.editId : "";
+    const subtab = data.subtab === "past" ? "past" : "upcoming";
+    return { view, editId, subtab };
+  }
+
+  function readFormDraft() {
+    const data = readJson(KEYS.formDraft, null);
+    if (!data || typeof data !== "object") return null;
+    if (typeof data.editId !== "string") return null;
+    return data;
+  }
+
+  function clearFormDraft() {
+    try {
+      localStorage.removeItem(KEYS.formDraft);
+    } catch {
+      /* ignore */
+    }
+    updateDraftBar();
+  }
+
+  function snapshotForm() {
+    const nameEl = $("#f-name");
+    const noteEl = $("#f-note");
+    const dateEl = $("#f-date");
+    const hourEl = $("#f-hour");
+    const minuteEl = $("#f-minute");
+    const tzEl = $("#f-tz");
+    if (!nameEl || !dateEl || !hourEl || !minuteEl) return null;
+    const time = readTimeFromForm();
+    return {
+      editId: state.editId || "",
+      name: nameEl.value.trim(),
+      note: noteEl ? noteEl.value.trim() : "",
+      date: dateEl.value || "",
+      hour: hourEl.value || "",
+      minute: minuteEl.value || "",
+      ampm: state.ampm || "AM",
+      timeFormat: state.timeFormat,
+      timeZone: state.selectedTz || (tzEl ? tzEl.value.trim() : ""),
+      time: time.ok ? time.time : "",
+    };
+  }
+
+  function formSemanticallyEqual(a, b) {
+    if (!a || !b) return false;
+    const timeSame = a.time && b.time ? a.time === b.time : a.hour === b.hour && a.minute === b.minute && a.ampm === b.ampm;
+    return (
+      a.editId === b.editId &&
+      a.name === b.name &&
+      a.note === b.note &&
+      a.date === b.date &&
+      a.timeZone === b.timeZone &&
+      timeSame
+    );
+  }
+
+  function captureFormClean() {
+    state.formClean = snapshotForm();
+  }
+
+  function applyDraftTime(draft) {
+    let hour = Number(draft.hour);
+    const minute = Number(draft.minute);
+    if (!Number.isFinite(hour) || !Number.isFinite(minute)) return;
+    let hour24 = hour;
+    if (draft.timeFormat === "12") {
+      if (hour === 12) hour24 = draft.ampm === "AM" ? 0 : 12;
+      else if (draft.ampm === "PM") hour24 += 12;
+    }
+    if (hour24 < 0 || hour24 > 23 || minute < 0 || minute > 59) return;
+    if (state.timeFormat === "12") {
+      state.ampm = hour24 >= 12 ? "PM" : "AM";
+      $("#f-hour").value = String(hour24 % 12 === 0 ? 12 : hour24 % 12);
+      $all("[data-ampm]").forEach((btn) => {
+        btn.setAttribute("aria-checked", btn.dataset.ampm === state.ampm ? "true" : "false");
+      });
+    } else {
+      $("#f-hour").value = pad2(hour24);
+    }
+    $("#f-minute").value = pad2(minute);
+  }
+
+  function restoreFormDraft() {
+    const draft = readFormDraft();
+    if (!draft) return false;
+    if (draft.editId !== (state.editId || "")) return false;
+    state.draftLock = true;
+    if ($("#f-name") && typeof draft.name === "string") $("#f-name").value = draft.name;
+    if ($("#f-note") && typeof draft.note === "string") $("#f-note").value = draft.note;
+    if ($("#f-date") && typeof draft.date === "string" && draft.date) $("#f-date").value = draft.date;
+    applyDraftTime(draft);
+    if (typeof draft.timeZone === "string" && draft.timeZone) {
+      if (isValidTimeZone(draft.timeZone)) selectZone(draft.timeZone);
+      else {
+        $("#f-tz").value = draft.timeZone;
+        state.selectedTz = "";
+      }
+    }
+    applyTimeFormatUi();
+    state.draftLock = false;
+    return true;
+  }
+
+  function saveFormDraft() {
+    if (state.draftLock || !state.root) return;
+    const snap = snapshotForm();
+    if (!snap) return;
+    if (!state.formClean || formSemanticallyEqual(snap, state.formClean)) {
+      const existing = readFormDraft();
+      if (existing && existing.editId === snap.editId) clearFormDraft();
+      else updateDraftBar();
+      return;
+    }
+    writeJson(KEYS.formDraft, { ...snap, savedAt: new Date().toISOString() });
+    updateDraftBar();
+  }
+
+  function scheduleFormDraftSave() {
+    if (state.draftLock) return;
+    if (state.draftTimer) clearTimeout(state.draftTimer);
+    state.draftTimer = setTimeout(() => {
+      state.draftTimer = null;
+      saveFormDraft();
+    }, 400);
+  }
+
+  function flushFormDraft() {
+    if (state.draftTimer) {
+      clearTimeout(state.draftTimer);
+      state.draftTimer = null;
+    }
+    saveFormDraft();
+  }
+
+  function updateDraftBar() {
+    const bar = $("#draft-bar");
+    if (!bar) return;
+    const draft = readFormDraft();
+    const show = Boolean(draft && draft.editId === (state.editId || "") && state.view === "new");
+    bar.hidden = !show;
+  }
+
+  function discardFormDraft() {
+    clearFormDraft();
+    const form = $("#event-form");
+    if (form) form.reset();
+    defaultFormValues();
+    applyFormMode();
+    captureFormClean();
+    updateDraftBar();
+  }
+
+  function primeNewView() {
+    applyFormMode();
+    captureFormClean();
+    restoreFormDraft();
+    updateDraftBar();
   }
 
   function paintView(view) {
@@ -797,6 +994,7 @@
   }
 
   function fillFormFromEvent(event) {
+    state.draftLock = true;
     clearErrors();
     $("#f-name").value = event.name;
     const noteField = $("#f-note");
@@ -815,6 +1013,7 @@
     $("#f-minute").value = pad2(minute);
     selectZone(event.timeZone);
     applyTimeFormatUi();
+    state.draftLock = false;
   }
 
   function applyFormMode() {
@@ -832,12 +1031,15 @@
     if (view === "new" && wantedId) {
       const found = state.events.find((item) => item.id === wantedId && !item.static);
       if (!found) {
+        const stale = readFormDraft();
+        if (stale && stale.editId === wantedId) clearFormDraft();
         state.editId = "";
         writeHash("new", "", false);
         paintView("new");
         $("#event-form").reset();
         defaultFormValues();
-        applyFormMode();
+        primeNewView();
+        persistLastView();
         showToast("Udalosť sa nenašla, vytváraš novú.");
         return;
       }
@@ -851,13 +1053,16 @@
     }
     writeHash(view, state.editId, Boolean(opts.push));
     paintView(view);
-    if (view === "new") applyFormMode();
+    if (view === "new") primeNewView();
+    else updateDraftBar();
+    persistLastView();
   }
 
   function onHashChange() {
     if (state.hashLock) return;
     const parsed = parseHash();
     if (parsed.view === state.view && parsed.editId === (state.editId || "")) return;
+    flushFormDraft();
     showView(parsed.view, { editId: parsed.editId });
   }
 
@@ -893,6 +1098,8 @@
     });
     if (!ok) return;
     saveEvents(state.events.filter((item) => item.id !== id));
+    const draft = readFormDraft();
+    if (draft && draft.editId === id) clearFormDraft();
     if (state.editId === id) {
       state.editId = "";
       showView("list");
@@ -974,6 +1181,8 @@
     defaultFormValues();
     state.editId = "";
     state.subtab = "upcoming";
+    clearFormDraft();
+    captureFormClean();
     showView("list");
     showToast(editing ? "Udalosť bola upravená." : "Udalosť bola uložená.");
   }
@@ -1294,17 +1503,22 @@
       applyTimeFormatUi();
     }
     state.subtab = "upcoming";
+    clearFormDraft();
     showView("list");
     showToast(`Importovaných udalostí: ${result.events.length}.`);
   }
 
   function bind() {
     $all("[data-nav]").forEach((btn) => {
-      btn.addEventListener("click", () => showView(btn.dataset.nav));
+      btn.addEventListener("click", () => {
+        flushFormDraft();
+        showView(btn.dataset.nav);
+      });
     });
     $all("[data-sub]").forEach((btn) => {
       btn.addEventListener("click", () => {
         state.subtab = btn.dataset.sub;
+        persistLastView();
         renderList();
       });
     });
@@ -1322,6 +1536,7 @@
         convertHourFields(state.timeFormat, btn.dataset.fmt);
         saveTimeFormat(btn.dataset.fmt);
         applyTimeFormatUi();
+        scheduleFormDraftSave();
       });
     });
     $all("[data-ampm]").forEach((btn) => {
@@ -1330,14 +1545,20 @@
         $all("[data-ampm]").forEach((item) => {
           item.setAttribute("aria-checked", item.dataset.ampm === state.ampm ? "true" : "false");
         });
+        scheduleFormDraftSave();
       });
     });
     $("#event-form").addEventListener("submit", onSubmit);
+    $("#event-form").addEventListener("input", scheduleFormDraftSave);
+    $("#event-form").addEventListener("change", scheduleFormDraftSave);
+    const discardBtn = $("#btn-discard-draft");
+    if (discardBtn) discardBtn.addEventListener("click", discardFormDraft);
     $("#event-rows").addEventListener("click", (event) => {
       const target = event.target instanceof Element ? event.target : event.target.parentElement;
       if (!target) return;
       const editBtn = target.closest("[data-edit]");
       if (editBtn) {
+        flushFormDraft();
         showView("new", { editId: editBtn.dataset.edit, push: true });
         return;
       }
@@ -1421,6 +1642,27 @@
     if (state.onHashChange) window.removeEventListener("hashchange", state.onHashChange);
     state.onHashChange = onHashChange;
     window.addEventListener("hashchange", state.onHashChange);
+    if (state.onPopState) window.removeEventListener("popstate", state.onPopState);
+    state.onPopState = onHashChange;
+    window.addEventListener("popstate", state.onPopState);
+    if (state.onPageHide) {
+      window.removeEventListener("pagehide", state.onPageHide);
+      window.removeEventListener("beforeunload", state.onPageHide);
+    }
+    state.onPageHide = () => {
+      flushFormDraft();
+      persistLastView();
+    };
+    window.addEventListener("pagehide", state.onPageHide);
+    window.addEventListener("beforeunload", state.onPageHide);
+    if (state.onVisibility) document.removeEventListener("visibilitychange", state.onVisibility);
+    state.onVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        flushFormDraft();
+        persistLastView();
+      }
+    };
+    document.addEventListener("visibilitychange", state.onVisibility);
   }
 
   function startTicker() {
@@ -1437,7 +1679,7 @@
       });
       return;
     }
-    navigator.serviceWorker.register("/service-worker.js").catch(() => {});
+    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
   }
 
   const SEED_EVENTS = [
@@ -1520,7 +1762,7 @@
   }
 
   async function loadStaticEvents() {
-    const urls = ["/static-events.json?v=tfc9", "static-events.json?v=tfc9"];
+    const urls = ["static-events.json?v=tfc10"];
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "reload" });
@@ -1541,8 +1783,18 @@
   function mount(root) {
     if (!root) return;
     if (state.ticker) clearInterval(state.ticker);
+    if (state.draftTimer) {
+      clearTimeout(state.draftTimer);
+      state.draftTimer = null;
+    }
     if (state.onDocClick) document.removeEventListener("click", state.onDocClick);
     if (state.onHashChange) window.removeEventListener("hashchange", state.onHashChange);
+    if (state.onPopState) window.removeEventListener("popstate", state.onPopState);
+    if (state.onPageHide) {
+      window.removeEventListener("pagehide", state.onPageHide);
+      window.removeEventListener("beforeunload", state.onPageHide);
+    }
+    if (state.onVisibility) document.removeEventListener("visibilitychange", state.onVisibility);
     state.root = root;
     state.zones = loadTimezones();
     state.events = loadEvents();
@@ -1556,9 +1808,16 @@
     bind();
     applyTimeFormatUi();
     defaultFormValues();
+    captureFormClean();
     {
-      const parsed = parseHash();
-      showView(parsed.view, { editId: parsed.editId });
+      const last = loadLastView();
+      state.subtab = last.subtab;
+      if (hashIsEmpty()) {
+        showView(last.view, { editId: last.editId });
+      } else {
+        const parsed = parseHash();
+        showView(parsed.view, { editId: parsed.editId });
+      }
     }
     startTicker();
     registerSw();

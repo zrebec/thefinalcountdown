@@ -1,22 +1,40 @@
-const CACHE_NAME = "tfc-v9";
-const ASSETS = [
-  "/",
-  "/style.css",
-  "/script.js",
-  "/manifest.json",
-  "/favicon.svg",
-  "/apple-touch-icon.png",
-  "/icon-192.png",
-  "/icon-512.png",
-  "/static-events.json",
+const CACHE_NAME = "tfc-v10";
+const BASE = new URL("./", self.location.href);
+const ASSET_PATHS = [
+  "./",
+  "./index.html",
+  "./style.css?v=tfc10",
+  "./script.js?v=tfc10",
+  "./manifest.json",
+  "./favicon.svg",
+  "./apple-touch-icon.png",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./static-events.json?v=tfc10",
 ];
+const ASSETS = ASSET_PATHS.map((path) => new URL(path, BASE).href);
+const SHELL_URLS = [new URL("./", BASE).href, new URL("./index.html", BASE).href];
+
+async function cachedShell() {
+  const cache = await caches.open(CACHE_NAME);
+  for (const url of SHELL_URLS) {
+    const hit = await cache.match(url);
+    if (hit) return hit;
+  }
+  return undefined;
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting()),
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const url of ASSETS) {
+        try {
+          await cache.add(url);
+        } catch {
+          /* skip missing; a failed addAll would abort the whole install */
+        }
+      }
+    }).then(() => self.skipWaiting()),
   );
 });
 
@@ -36,18 +54,29 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
+  const fromNetwork = () =>
+    fetch(event.request).then((response) => {
+      if (response && response.ok && response.type === "basic") {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+      }
+      return response;
+    });
+
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      caches
+        .match(event.request)
+        .then((cached) => cached || fromNetwork())
+        .catch(() => cachedShell()),
+    );
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then((response) => {
-          if (response && response.ok && response.type === "basic") {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          }
-          return response;
-        })
-        .catch(() => caches.match("/"));
-    }),
+    caches
+      .match(event.request)
+      .then((cached) => cached || fromNetwork())
+      .catch(() => cachedShell()),
   );
 });
