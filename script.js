@@ -493,9 +493,14 @@
     return `${parts.slice(0, -1).join(", ")} a ${parts[parts.length - 1]}`;
   }
 
+  function isCompactRemain() {
+    return window.matchMedia("(max-width: 719px)").matches;
+  }
+
   function formatRemaining(deltaMs, live = false) {
     if (live) return "TERAZ!";
     const past = deltaMs <= 0;
+    const compact = isCompactRemain();
     let seconds = Math.floor(Math.abs(deltaMs) / 1000);
     const days = Math.floor(seconds / 86400);
     seconds %= 86400;
@@ -503,16 +508,30 @@
     seconds %= 3600;
     const minutes = Math.floor(seconds / 60);
     seconds %= 60;
-    const parts = [];
-    if (days >= 1) {
-      parts.push(plural(days, "deň", "dni", "dní"));
-      parts.push(plural(hours, "hodina", "hodiny", "hodín"));
+    let text;
+    if (compact) {
+      const parts = [];
+      if (days >= 1) {
+        parts.push(`${days} d`);
+        parts.push(`${hours} h`);
+      } else {
+        if (hours) parts.push(`${hours} h`);
+        parts.push(`${minutes} min`);
+        parts.push(`${seconds} s`);
+      }
+      text = parts.join(" ");
     } else {
-      if (hours) parts.push(plural(hours, "hodina", "hodiny", "hodín"));
-      parts.push(plural(minutes, "minúta", "minúty", "minút"));
-      parts.push(plural(seconds, "sekunda", "sekundy", "sekúnd"));
+      const parts = [];
+      if (days >= 1) {
+        parts.push(plural(days, "deň", "dni", "dní"));
+        parts.push(plural(hours, "hodina", "hodiny", "hodín"));
+      } else {
+        if (hours) parts.push(plural(hours, "hodina", "hodiny", "hodín"));
+        parts.push(plural(minutes, "minúta", "minúty", "minút"));
+        parts.push(plural(seconds, "sekunda", "sekundy", "sekúnd"));
+      }
+      text = joinSk(parts);
     }
-    const text = joinSk(parts);
     return past ? `+ ${text}` : text;
   }
 
@@ -720,14 +739,13 @@
         const past = phase === "past";
         const nameColor = isStatic && isSafeColor(event.color) ? event.color : "";
         const nameStyle = nameColor ? ` style="color:${nameColor}"` : "";
-        const stripeStyle = nameColor ? ` style="--stripe:${nameColor}"` : "";
         const action = isStatic
           ? `<span class="static-tag">${escapeHtml(event.calendar || "Statická")}</span>`
           : `<div class="row-actions">
               <button type="button" class="btn btn-ghost btn-icon" data-edit="${escapeHtml(event.id)}" aria-label="Upraviť">${ICON.pencil}</button>
               <button type="button" class="btn btn-danger btn-icon" data-delete="${escapeHtml(event.id)}" aria-label="Vymazať">${ICON.trash}</button>
             </div>`;
-        return `<tr data-id="${escapeHtml(event.id)}" class="${isStatic ? "is-static" : "is-user"}"${stripeStyle}>
+        return `<tr data-id="${escapeHtml(event.id)}" class="${isStatic ? "is-static" : "is-user"}">
           <td data-col="name">
             <span class="event-name"${nameStyle}>${escapeHtml(event.name)}</span>
             ${eventNote(event) ? `<span class="event-note">${escapeHtml(eventNote(event))}</span>` : ""}
@@ -1776,7 +1794,7 @@
   }
 
   async function loadStaticEvents() {
-    const urls = ["static-events.json?v=tfc15"];
+    const urls = ["static-events.json?v=tfc19"];
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "reload" });

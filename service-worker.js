@@ -1,16 +1,16 @@
-const CACHE_NAME = "tfc-v15";
+const CACHE_NAME = "tfc-v19";
 const BASE = new URL("./", self.location.href);
 const ASSET_PATHS = [
   "./",
   "./index.html",
-  "./style.css?v=tfc15",
-  "./script.js?v=tfc15",
+  "./style.css?v=tfc19",
+  "./script.js?v=tfc19",
   "./manifest.json",
   "./favicon.svg",
   "./apple-touch-icon.png",
   "./icon-192.png",
   "./icon-512.png",
-  "./static-events.json?v=tfc15",
+  "./static-events.json?v=tfc19",
 ];
 const ASSETS = ASSET_PATHS.map((path) => new URL(path, BASE).href);
 const SHELL_URLS = [new URL("./", BASE).href, new URL("./index.html", BASE).href];
