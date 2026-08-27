@@ -46,11 +46,12 @@ html {
 }
 
 html,
-body,
-#tfc-root {
+body {
   margin: 0;
   height: 100%;
-  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -66,15 +67,24 @@ body {
   font-family: var(--font);
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 .app {
   flex: 1;
   min-height: 0;
   height: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overflow-x: hidden;
   padding: calc(10px + env(safe-area-inset-top)) 16px calc(var(--tabbar-h) + 18px + env(safe-area-inset-bottom));
   background:
     radial-gradient(900px 520px at 8% -8%, var(--glow-a), transparent 58%),
@@ -84,6 +94,7 @@ body {
 
 .shell {
   width: min(100%, 840px);
+  max-width: 100%;
   margin: 0 auto;
   flex: 1;
   display: flex;
@@ -104,6 +115,9 @@ body {
   flex: 1;
   min-height: 0;
   overflow: auto;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .top {
@@ -220,7 +234,7 @@ body {
   min-height: 0;
   overflow: auto;
   border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
+  border-radius: calc(var(--radius) * 5);
   background: color-mix(in oklab, var(--bg-card) 88%, black);
   box-shadow: var(--shadow);
 }
@@ -287,7 +301,7 @@ body {
   appearance: none;
   font: inherit;
   font-weight: 600;
-  border-radius: var(--radius-sm);
+  border-radius: calc(var(--radius) * 2);
   min-height: 44px;
   padding: 0 16px;
   border: 1px solid transparent;
@@ -343,8 +357,10 @@ body {
   display: grid;
   gap: 16px;
   padding: 20px;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
+  border-radius: calc(var(--radius) * 5);
   background: color-mix(in oklab, var(--bg-card) 90%, black);
 }
 
@@ -368,7 +384,7 @@ body {
   justify-content: space-between;
   gap: 12px;
   padding: 8px 12px;
-  border-radius: var(--radius-md);
+  border-radius: calc(var(--radius) * 3);
   border: 1px dashed color-mix(in oklab, var(--accent) 40%, var(--border));
   background: color-mix(in oklab, var(--accent) 12%, var(--bg-input));
   color: var(--fg-muted);
@@ -389,6 +405,8 @@ body {
 .field {
   display: grid;
   gap: 6px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .field-label {
@@ -402,13 +420,20 @@ body {
 .field textarea,
 .combo input {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 48px;
-  border-radius: var(--radius-md);
+  border-radius: calc(var(--radius) * 3);
   border: 1px solid var(--border-strong);
   background: var(--bg-input);
   color: var(--fg);
   font: inherit;
   padding: 0 14px;
+}
+
+.field input[type="date"] {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .field input:focus-visible,
@@ -477,7 +502,7 @@ body {
   overflow: auto;
   background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
+  border-radius: calc(var(--radius) * 3);
   box-shadow: var(--shadow);
 }
 
@@ -491,7 +516,7 @@ body {
   font: inherit;
   min-height: 44px;
   padding: 8px 10px;
-  border-radius: var(--radius-xs);
+  border-radius: calc(var(--radius) * 2);
 }
 
 .combo-list button[aria-selected="true"],
@@ -531,7 +556,7 @@ body {
 .data-card {
   padding: 18px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
+  border-radius: calc(var(--radius) * 5);
   background: color-mix(in oklab, var(--bg-card) 90%, black);
   display: grid;
   gap: 12px;
@@ -558,7 +583,7 @@ body {
   min-height: 44px;
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: calc(var(--radius) * 5);
   background: var(--bg-input);
   font-weight: 500;
   cursor: pointer;
@@ -614,7 +639,7 @@ body {
 .modal-card {
   margin: 0;
   padding: 22px;
-  border-radius: var(--radius-xl);
+  border-radius: calc(var(--radius) * 5);
   background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
   box-shadow: var(--shadow);
@@ -763,6 +788,11 @@ body {
     box-shadow: none;
   }
 
+  .form {
+    padding: 0 0 8px;
+    overflow-x: hidden;
+  }
+
   .events thead {
     position: absolute;
     width: 1px;
@@ -885,7 +915,7 @@ body {
   margin-top: 12px;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: calc(var(--radius) * 5);
   background: color-mix(in oklab, var(--bg-card) 92%, black);
   color: var(--fg);
   font-weight: 500;
