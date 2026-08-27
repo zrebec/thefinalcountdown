@@ -4,6 +4,7 @@
     timeFormat: "tfc:timeFormat",
     timezones: "tfc:timezones",
     showStatic: "tfc:showStatic",
+    theme: "tfc:theme",
     lastView: "tfc:lastView",
     formDraft: "tfc:formDraft",
   };
@@ -245,7 +246,7 @@
     tzHighlight: 0,
     events: [],
     staticEvents: [],
-    showStatic: true,
+    showStatic: false,
     zones: [],
     ticker: null,
     toastTimer: null,
@@ -1820,7 +1821,7 @@
 
   function loadShowStatic() {
     const raw = localStorage.getItem(KEYS.showStatic);
-    return raw == null ? true : raw === "1" || raw === "true";
+    return raw == null ? false : raw === "1" || raw === "true";
   }
 
   function normalizeStaticPayload(data) {
