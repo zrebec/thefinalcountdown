@@ -1,16 +1,16 @@
-const CACHE_NAME = "tfc-v12";
+const CACHE_NAME = "tfc-v13";
 const BASE = new URL("./", self.location.href);
 const ASSET_PATHS = [
   "./",
   "./index.html",
-  "./style.css?v=tfc12",
-  "./script.js?v=tfc12",
+  "./style.css?v=tfc13",
+  "./script.js?v=tfc13",
   "./manifest.json",
   "./favicon.svg",
   "./apple-touch-icon.png",
   "./icon-192.png",
   "./icon-512.png",
-  "./static-events.json?v=tfc12",
+  "./static-events.json?v=tfc13",
 ];
 const ASSETS = ASSET_PATHS.map((path) => new URL(path, BASE).href);
 const SHELL_URLS = [new URL("./", BASE).href, new URL("./index.html", BASE).href];
@@ -65,10 +65,9 @@ self.addEventListener("fetch", (event) => {
 
   if (event.request.mode === "navigate") {
     event.respondWith(
-      caches
-        .match(event.request)
-        .then((cached) => cached || fromNetwork())
-        .catch(() => cachedShell()),
+      fromNetwork().catch(() =>
+        caches.match(event.request).then((cached) => cached || cachedShell()),
+      ),
     );
     return;
   }

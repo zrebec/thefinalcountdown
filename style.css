@@ -738,6 +738,17 @@ body {
 }
 
 @media (max-width: 719px) {
+  .subtabs {
+    padding: 2px;
+    margin-bottom: 8px;
+    gap: 4px;
+  }
+
+  .subtabs button {
+    min-height: 36px;
+    padding: 0 10px;
+  }
+
   .panel.is-on[data-panel="list"] {
     gap: 8px;
   }
