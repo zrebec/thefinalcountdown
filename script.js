@@ -720,13 +720,14 @@
         const past = phase === "past";
         const nameColor = isStatic && isSafeColor(event.color) ? event.color : "";
         const nameStyle = nameColor ? ` style="color:${nameColor}"` : "";
+        const stripeStyle = nameColor ? ` style="--stripe:${nameColor}"` : "";
         const action = isStatic
           ? `<span class="static-tag">${escapeHtml(event.calendar || "Statická")}</span>`
           : `<div class="row-actions">
               <button type="button" class="btn btn-ghost btn-icon" data-edit="${escapeHtml(event.id)}" aria-label="Upraviť">${ICON.pencil}</button>
               <button type="button" class="btn btn-danger btn-icon" data-delete="${escapeHtml(event.id)}" aria-label="Vymazať">${ICON.trash}</button>
             </div>`;
-        return `<tr data-id="${escapeHtml(event.id)}" class="${isStatic ? "is-static" : "is-user"}">
+        return `<tr data-id="${escapeHtml(event.id)}" class="${isStatic ? "is-static" : "is-user"}"${stripeStyle}>
           <td data-col="name">
             <span class="event-name"${nameStyle}>${escapeHtml(event.name)}</span>
             ${eventNote(event) ? `<span class="event-note">${escapeHtml(eventNote(event))}</span>` : ""}
@@ -1762,7 +1763,7 @@
   }
 
   async function loadStaticEvents() {
-    const urls = ["static-events.json?v=tfc11"];
+    const urls = ["static-events.json?v=tfc12"];
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "reload" });
