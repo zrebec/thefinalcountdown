@@ -17,6 +17,7 @@ Live files in `/workspace/public/` are a copy of this project.
 
 - Mobile first, chronological list always.
 - Static calendars are edited by hand in JSON; user events live in `localStorage`.
+- Slovak namedays (`namedays-sk.json`) are a yearly lookup (month + day), not a countdown calendar. Show today + tomorrow under the header only.
 - `note` is optional. Missing / `null` / `""` → render nothing (no crash).
 - Static event title color = group `color`. Invalid or missing hex → grey.
 - Date, time, and remaining for static events = grey. For user events = green (except the Past card).
