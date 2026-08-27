@@ -737,7 +737,23 @@ body {
   }
 }
 
-@media (max-width: 699px) {
+@media (max-width: 719px) {
+  .panel.is-on[data-panel="list"] {
+    gap: 8px;
+  }
+
+  .static-toggle {
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+
+  .table-wrap {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
   .events thead {
     position: absolute;
     width: 1px;
@@ -756,18 +772,28 @@ body {
 
   .events tbody {
     display: grid;
-    gap: 10px;
-    padding: 10px;
+    gap: 6px;
+    padding: 0;
   }
 
   .events tbody tr {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 14px;
-    border: 1px solid var(--border);
-    border-radius: calc(var(--radius-xl) - 10px);
-    background: var(--bg-elevated);
+    gap: 6px;
+    padding: 8px 10px 8px 12px;
+    border: 0;
+    border-left: 4px solid var(--stripe, var(--fg-subtle));
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .events:not(.is-past-view) tbody tr.is-user {
+    border-left-color: var(--ok);
+  }
+
+  .events.is-past-view tbody tr {
+    border-left-color: var(--fg-subtle);
   }
 
   .events tbody tr + tr td {
@@ -783,12 +809,18 @@ body {
   }
 
   .events td[data-col="action"] .row-actions {
-    justify-content: stretch;
+    justify-content: flex-end;
   }
 
   .events td[data-col="action"] .btn-icon {
-    flex: 1;
-    width: auto;
+    flex: none;
+    width: 44px;
+  }
+
+  .events td[data-col="action"] .static-tag {
+    display: block;
+    max-width: none;
+    text-align: right;
   }
 }
 

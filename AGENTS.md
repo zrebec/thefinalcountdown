@@ -1,67 +1,77 @@
-# The Final Countdown — projektové poznámky
+# The Final Countdown — project notes
 
 Vanilla SPA (`index.html` + `style.css` + `script.js` + `static-events.json`).
-Živé súbory v `/workspace/public/` sú kópiou tohto projektu.
+Live files in `/workspace/public/` are a copy of this project.
 
-## Zlaté pravidlá
+## Owner / agent workflow
 
-- Mobile first, chronologický zoznam vždy.
-- Statické kalendáre sa editujú ručne v JSON; užívateľské udalosti v `localStorage`.
-- `note` je voliteľné. Chýba / `null` / `""` → nič nerenderovať (žiadny pád).
-- Farba názvu statickej udalosti = `color` skupiny. Neplatný/chýbajúci hex → sivá.
-- Dátum, čas a zostáva u statických = sivé. U užívateľských = zelené (okrem karty Minulé).
+- Reply to the owner **in Slovak**, regardless of the input language. Clarifying questions in Slovak too. All conversation with the owner is Slovak.
+- If something is unclear, **ask**. Do not guess past a missing decision.
+- Code comments, commit messages, README, AGENTS.md, and all project documentation are **English** (GitHub baseline).
+- Never work directly on `main`. Always create a new branch from `main` and edit only on that branch.
+- Never commit or push. After approved edits, only suggest a commit message.
+- Stay inside this repository. Do not write outside the project (home directory, other folders, other repos).
+- Do not implement the “planned steps” below until the owner approves them.
 
-## Plánované kroky (zatiaľ nerealizovať, kým to neschváli používateľ)
+## Golden rules
 
-### Viac kalendárov
+- Mobile first, chronological list always.
+- Static calendars are edited by hand in JSON; user events live in `localStorage`.
+- `note` is optional. Missing / `null` / `""` → render nothing (no crash).
+- Static event title color = group `color`. Invalid or missing hex → grey.
+- Date, time, and remaining for static events = grey. For user events = green (except the Past card).
 
-Samostatné skupiny v `static-events.json` (už je základ: `id`, `name`, `color`, `events`).
+## Planned steps (do not implement until the owner approves)
 
-Ďalšie kalendáre v poradí:
+### More calendars
 
-1. **Špekulácie** — Grok 5, Claude, BTC $100k… (zatiaľ jedna časová bodka).
-2. **Meniny** — opakované každý rok.
-3. **Narodeniny** — opakované každý rok.
-4. Ďalšie (F1 už existuje).
+Separate groups in `static-events.json` (already: `id`, `name`, `color`, `events`).
 
-Každý kalendár má vlastné meno (zobrazuje sa namiesto „statická“) a vlastnú farbu.
-Zapínanie/vypínanie: neskôr per-kalendár, dnes jeden checkbox „Statické udalosti“.
+Further calendars, in order:
 
-### Opakované udalosti
+1. **Speculation** — Grok 5, Claude, BTC $100k… (still a single time point).
+2. **Name days** — yearly.
+3. **Birthdays** — yearly.
+4. Others (F1 already exists).
 
-Plánovaný model (nerealizovať teraz): `repeat: "yearly" | "none"` + `month`/`day`,
-rok sa dopočíta na aktuálny (`getFullYear()`), po polnoci dňa platnosti ide do Minulé
-a ďalší ročník sa objaví až v novom roku (rovnaké pravidlo ako pri statických sviatkoch).
+Each calendar has its own name (shown instead of “static”) and its own color.
+Enable/disable: later per calendar; today one checkbox “Static events”.
 
-### Interval (od–do) — poznámka k diskusii
+### Repeating events
 
-Zatiaľ **jedna bodka** (`date` + `time` + `timeZone`).
+Planned model (not now): `repeat: "yearly" | "none"` + `month`/`day`,
+year is derived (`getFullYear()`). After midnight of the valid day it moves to Past,
+and the next year appears only in the new calendar year (same rule as static holidays).
 
-Ak pôjdeme do intervalu, bude to **globálne pre všetky kalendáre** (user aj static),
-nie špeciálny prípad pre špekulácie. Otvorené otázky:
+### Interval (from–to) — discussion note
 
-- Zobrazovať „prebieha“ medzi začiatkom a koncom (ako TERAZ! pri sviatkoch)?
-- Do Minulé až po `end`, alebo hneď po `start`?
-- All-day interval vs. presný čas na oboch koncoch?
+Still **one point** (`date` + `time` + `timeZone`).
 
-### PWA vs. native (App Store / Play)
+If we add intervals, it will be **global for every calendar** (user and static),
+not a special case for speculation. Open questions:
 
-Cesta **web-first (PWA)** je správna, kým:
+- Show “in progress” between start and end (like TERAZ! on holidays)?
+- Move to Past only after `end`, or right after `start`?
+- All-day interval vs exact time on both ends?
 
-- stačí inštalácia na plochu (manifest + ikony + SW už sú),
-- notifikácie môžu ísť **kým je stránka otvorená** (in-page toast / Notification API,
-  model ako GitHub v tabe),
-- dáta sú zatiaľ per-prehliadač (`localStorage`).
+### PWA vs native (App Store / Play)
 
-Native (Capacitor + store) až keď bude treba:
+**Web-first (PWA)** is the right path while:
 
-- push na zamknutý telefón (Background),
-- zdieľanie dát medzi zariadeniami (vtedy hostovaná DB, napr. SQLite),
-- tvOS / stále zapnutý iPad ako „domáci displej“ s fan-out notifikáciami.
+- home-screen install is enough (manifest + icons + SW already exist),
+- notifications can run **while the page is open** (in-page toast / Notification API,
+  GitHub-in-a-tab model),
+- data is still per-browser (`localStorage`).
 
-Ďalšia debata: Web Notification pri otvorenej karte vs. Web Push + service worker.
+Native (Capacitor + store) only when we need:
 
-## Schéma udalosti (aktuálna)
+- push on a locked phone (background),
+- sharing data across devices (then a hosted DB, e.g. SQLite),
+- tvOS / always-on iPad as a “house display” with fan-out notifications.
+
+Later debate: Web Notification on an open tab vs Web Push + service worker.
+
+## Event schema (current)
 
 ```json
 {
@@ -70,8 +80,8 @@ Native (Capacitor + store) až keď bude treba:
   "date": "YYYY-MM-DD",
   "time": "HH:MM",
   "timeZone": "IANA",
-  "note": "voliteľné, string; vynechať ak prázdne"
+  "note": "optional string; omit if empty"
 }
 ```
 
-Statická skupina: `{ "id", "name", "color", "events": [ ... ] }`.
+Static group: `{ "id", "name", "color", "events": [ ... ] }`.
