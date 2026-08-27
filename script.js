@@ -291,7 +291,10 @@
 
   function uid() {
     if (crypto.randomUUID) return crypto.randomUUID();
-    return `tfc-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+    const bytes = new Uint8Array(8);
+    crypto.getRandomValues(bytes);
+    const tail = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("").slice(0, 8);
+    return `tfc-${Date.now().toString(36)}-${tail}`;
   }
 
   function readJson(key, fallback) {
@@ -485,7 +488,9 @@
 
   function plural(n, one, few, many) {
     const abs = Math.abs(n);
-    const word = abs === 1 ? one : abs >= 2 && abs <= 4 ? few : many;
+    let word = many;
+    if (abs === 1) word = one;
+    else if (abs >= 2 && abs <= 4) word = few;
     return `${n} ${word}`;
   }
 
@@ -515,23 +520,19 @@
     if (compact) {
       const parts = [];
       if (days >= 1) {
-        parts.push(`${days} d`);
-        parts.push(`${hours} h`);
+        parts.push(`${days} d`, `${hours} h`);
       } else {
         if (hours) parts.push(`${hours} h`);
-        parts.push(`${minutes} min`);
-        parts.push(`${seconds} s`);
+        parts.push(`${minutes} min`, `${seconds} s`);
       }
       text = parts.join(" ");
     } else {
       const parts = [];
       if (days >= 1) {
-        parts.push(plural(days, "deň", "dni", "dní"));
-        parts.push(plural(hours, "hodina", "hodiny", "hodín"));
+        parts.push(plural(days, "deň", "dni", "dní"), plural(hours, "hodina", "hodiny", "hodín"));
       } else {
         if (hours) parts.push(plural(hours, "hodina", "hodiny", "hodín"));
-        parts.push(plural(minutes, "minúta", "minúty", "minút"));
-        parts.push(plural(seconds, "sekunda", "sekundy", "sekúnd"));
+        parts.push(plural(minutes, "minúta", "minúty", "minút"), plural(seconds, "sekunda", "sekundy", "sekúnd"));
       }
       text = joinSk(parts);
     }
@@ -600,7 +601,7 @@
   }
 
   function filteredZones(query) {
-    const q = query.trim().toLowerCase().replace(/\s+/g, "_");
+    const q = query.trim().toLowerCase().replaceAll(/\s+/g, "_");
     if (!q) return state.zones.slice(0, 12);
     const alias = TZ_ALIASES[q];
     const out = [];
@@ -608,7 +609,7 @@
     for (const zone of state.zones) {
       if (zone === alias) continue;
       const hay = zone.toLowerCase();
-      if (hay.includes(q) || hay.replace(/_/g, " ").includes(query.trim().toLowerCase())) {
+      if (hay.includes(q) || hay.replaceAll("_", " ").includes(query.trim().toLowerCase())) {
         out.push(zone);
       }
       if (out.length >= 12) break;
@@ -623,7 +624,7 @@
     list.innerHTML = items
       .map(
         (zone, index) =>
-          `<li><button type="button" role="option" data-tz="${escapeHtml(zone)}" aria-selected="${index === state.tzHighlight ? "true" : "false"}">${escapeHtml(zone.replace(/_/g, " "))}</button></li>`,
+          `<li><button type="button" role="option" data-tz="${escapeHtml(zone)}" aria-selected="${index === state.tzHighlight ? "true" : "false"}">${escapeHtml(zone.replaceAll("_", " "))}</button></li>`,
       )
       .join("");
     list.hidden = items.length === 0;
@@ -977,9 +978,12 @@
     if (!draft) return false;
     if (draft.editId !== (state.editId || "")) return false;
     state.draftLock = true;
-    if ($("#f-name") && typeof draft.name === "string") $("#f-name").value = draft.name;
-    if ($("#f-note") && typeof draft.note === "string") $("#f-note").value = draft.note;
-    if ($("#f-date") && typeof draft.date === "string" && draft.date) $("#f-date").value = draft.date;
+    const nameEl = $("#f-name");
+    const noteEl = $("#f-note");
+    const dateEl = $("#f-date");
+    if (nameEl && typeof draft.name === "string") nameEl.value = draft.name;
+    if (noteEl && typeof draft.note === "string") noteEl.value = draft.note;
+    if (dateEl && typeof draft.date === "string" && draft.date) dateEl.value = draft.date;
     applyDraftTime(draft);
     if (typeof draft.timeZone === "string" && draft.timeZone) {
       if (isValidTimeZone(draft.timeZone)) selectZone(draft.timeZone);
@@ -999,7 +1003,7 @@
     if (!snap) return;
     if (!state.formClean || formSemanticallyEqual(snap, state.formClean)) {
       const existing = readFormDraft();
-      if (existing && existing.editId === snap.editId) clearFormDraft();
+      if (existing?.editId === snap.editId) clearFormDraft();
       else updateDraftBar();
       return;
     }
@@ -1028,7 +1032,7 @@
     const bar = $("#draft-bar");
     if (!bar) return;
     const draft = readFormDraft();
-    const show = Boolean(draft && draft.editId === (state.editId || "") && state.view === "new");
+    const show = Boolean(draft?.editId === (state.editId || "") && state.view === "new");
     bar.hidden = !show;
   }
 
@@ -1103,7 +1107,7 @@
       const found = state.events.find((item) => item.id === wantedId && !item.static);
       if (!found) {
         const stale = readFormDraft();
-        if (stale && stale.editId === wantedId) clearFormDraft();
+        if (stale?.editId === wantedId) clearFormDraft();
         state.editId = "";
         writeHash("new", "", false);
         paintView("new");
@@ -1170,7 +1174,7 @@
     if (!ok) return;
     saveEvents(state.events.filter((item) => item.id !== id));
     const draft = readFormDraft();
-    if (draft && draft.editId === id) clearFormDraft();
+    if (draft?.editId === id) clearFormDraft();
     if (state.editId === id) {
       state.editId = "";
       showView("list");
@@ -1192,8 +1196,8 @@
       valid = false;
     }
     const noteField = $("#f-note");
-    const note = eventNote({ note: noteField ? noteField.value : "" });
-    if (noteField && noteField.value && noteField.value.length > 200) {
+    const note = eventNote({ note: noteField?.value || "" });
+    if (noteField?.value?.length > 200) {
       setFieldError("note", "Poznámka môže mať najviac 200 znakov.");
       valid = false;
     }
@@ -1231,7 +1235,7 @@
       date,
       time: time.time,
       timeZone: state.selectedTz,
-      createdAt: editing && editing.createdAt ? editing.createdAt : new Date().toISOString(),
+      createdAt: editing?.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
     if (note) payload.note = note;
@@ -1274,10 +1278,10 @@
 
   function icalEscape(value) {
     return String(value)
-      .replace(/\\/g, "\\\\")
-      .replace(/;/g, "\\;")
-      .replace(/,/g, "\\,")
-      .replace(/\r\n|\n|\r/g, "\\n");
+      .replaceAll("\\", "\\\\")
+      .replaceAll(";", String.raw`\;`)
+      .replaceAll(",", String.raw`\,`)
+      .replaceAll(/\r\n|\n|\r/g, String.raw`\n`);
   }
 
   function icalFold(line) {
@@ -1312,7 +1316,7 @@
   }
 
   function icalDateStamp(dateStr) {
-    return String(dateStr).replace(/-/g, "");
+    return String(dateStr).replaceAll('-', "");
   }
 
   function isAllDayEvent(event) {
@@ -1343,22 +1347,28 @@
       "X-WR-CALNAME:The Final Countdown",
     ];
     icalEvents(includeStatic).forEach((event) => {
-      const safeId = String(event.id || "event").replace(/[^A-Za-z0-9._-]/g, "-");
+      const safeId = String(event.id || "event").replaceAll(/[^A-Za-z0-9._-]/g, "-");
       const tz = isValidTimeZone(event.timeZone) ? event.timeZone : "UTC";
       const note = eventNote(event);
-      lines.push("BEGIN:VEVENT");
-      lines.push(`UID:${safeId}@thefinalcountdown.local`);
-      lines.push(`DTSTAMP:${icalUtcStamp(Date.now())}`);
-      lines.push(icalFold(`SUMMARY:${icalEscape(event.name)}`));
+      lines.push(
+        "BEGIN:VEVENT",
+        `UID:${safeId}@thefinalcountdown.local`,
+        `DTSTAMP:${icalUtcStamp(Date.now())}`,
+        icalFold(`SUMMARY:${icalEscape(event.name)}`),
+      );
       if (isAllDayEvent(event)) {
-        lines.push(`DTSTART;VALUE=DATE:${icalDateStamp(event.date)}`);
-        lines.push(`DTEND;VALUE=DATE:${icalDateStamp(nextIsoDate(event.date))}`);
-        lines.push("TRANSP:TRANSPARENT");
+        lines.push(
+          `DTSTART;VALUE=DATE:${icalDateStamp(event.date)}`,
+          `DTEND;VALUE=DATE:${icalDateStamp(nextIsoDate(event.date))}`,
+          "TRANSP:TRANSPARENT",
+        );
       } else {
         const end = formatWall(eventInstant(event) + 3600 * 1000, tz);
-        lines.push(`DTSTART;TZID=${tz}:${icalLocalStamp(event.date, event.time)}`);
-        lines.push(`DTEND;TZID=${tz}:${icalLocalStamp(end.date, end.time)}`);
-        lines.push("TRANSP:OPAQUE");
+        lines.push(
+          `DTSTART;TZID=${tz}:${icalLocalStamp(event.date, event.time)}`,
+          `DTEND;TZID=${tz}:${icalLocalStamp(end.date, end.time)}`,
+          "TRANSP:OPAQUE",
+        );
       }
       if (note) lines.push(icalFold(`DESCRIPTION:${icalEscape(note)}`));
       if (event.calendar) lines.push(icalFold(`CATEGORIES:${icalEscape(event.calendar)}`));
@@ -1377,7 +1387,7 @@
   }
 
   function revokeExportUrl() {
-    if (state.exportUrl && state.exportUrl.startsWith("blob:")) {
+    if (state.exportUrl?.startsWith("blob:")) {
       URL.revokeObjectURL(state.exportUrl);
     }
     state.exportUrl = null;
@@ -1395,7 +1405,7 @@
       area.style.left = "-9999px";
       document.body.appendChild(area);
       area.select();
-      const ok = document.execCommand("copy");
+      const ok = document.execCommand("copy"); // NOSONAR S1874 clipboard fallback when Clipboard API is blocked
       area.remove();
       return ok;
     }
@@ -1439,7 +1449,7 @@
         if (state.exportUrl) real.href = state.exportUrl;
       }
     }
-    if (dlg && !dlg.open) dlg.showModal();
+    if (dlg?.open === false) dlg.showModal();
   }
 
   function onExportClick() {
@@ -1452,13 +1462,13 @@
   }
 
   function revokeIcsUrl() {
-    if (state.icsUrl && state.icsUrl.startsWith("blob:")) URL.revokeObjectURL(state.icsUrl);
+    if (state.icsUrl?.startsWith("blob:")) URL.revokeObjectURL(state.icsUrl);
     state.icsUrl = null;
   }
 
   function prepareIcalLink() {
     const filename = "the-final-countdown.ics";
-    const includeStatic = Boolean($("#toggle-ical-static") && $("#toggle-ical-static").checked);
+    const includeStatic = Boolean($("#toggle-ical-static")?.checked);
     const text = buildIcalText(includeStatic);
     const blob = new Blob([text], { type: "text/calendar;charset=utf-8" });
     revokeIcsUrl();
@@ -1560,9 +1570,13 @@
       return;
     }
     if (state.events.length) {
+      const n = state.events.length;
+      let noun = "udalostí";
+      if (n === 1) noun = "udalosť";
+      else if (n < 5) noun = "udalosti";
       const ok = await openDialog({
         title: "Prepísať existujúci obsah?",
-        body: `Aktuálne máš ${state.events.length} ${state.events.length === 1 ? "udalosť" : state.events.length < 5 ? "udalosti" : "udalostí"}. Import ich všetky nahradí.`,
+        body: `Aktuálne máš ${n} ${noun}. Import ich všetky nahradí.`,
         confirmLabel: "Prepísať",
         danger: true,
       });
@@ -1638,21 +1652,23 @@
     });
     $("#btn-export").addEventListener("click", onExportClick);
     const icsBtn = $("#btn-export-ics");
-    if (icsBtn) {
-      icsBtn.addEventListener("click", onIcalClick);
-      icsBtn.addEventListener("pointerdown", prepareIcalLink);
-    }
-    const icsStatic = $("#toggle-ical-static");
-    if (icsStatic) icsStatic.addEventListener("change", prepareIcalLink);
+    icsBtn?.addEventListener("click", onIcalClick);
+    icsBtn?.addEventListener("pointerdown", prepareIcalLink);
+    $("#toggle-ical-static")?.addEventListener("change", prepareIcalLink);
     $("#btn-copy-export").addEventListener("click", async () => {
       prepareExportLink();
       const ok = await copyText(state.exportText);
       showToast(ok ? "JSON je v schránke." : "Kopírovanie sa nepodarilo.");
     });
     $("#btn-copy-json").addEventListener("click", async () => {
-      const text = state.exportKind === "ics" ? state.icsText || buildIcalText(Boolean($("#toggle-ical-static") && $("#toggle-ical-static").checked)) : state.exportText || buildExportText();
+      const ics = state.exportKind === "ics";
+      const text = ics
+        ? state.icsText || buildIcalText(Boolean($("#toggle-ical-static")?.checked))
+        : state.exportText || buildExportText();
       const ok = await copyText(text);
-      showToast(ok ? (state.exportKind === "ics" ? "iCal je v schránke." : "JSON je v schránke.") : "Kopírovanie sa nepodarilo.");
+      let toast = "Kopírovanie sa nepodarilo.";
+      if (ok) toast = ics ? "iCal je v schránke." : "JSON je v schránke.";
+      showToast(toast);
     });
     $("#btn-close-export").addEventListener("click", () => {
       $("#tfc-export-dialog").close();
@@ -1663,7 +1679,7 @@
       $("#tfc-export-dialog").close();
     });
     $("#file-import").addEventListener("change", (event) => {
-      const file = event.target.files && event.target.files[0];
+      const file = event.target.files?.[0];
       onImportFile(file).finally(() => {
         event.target.value = "";
       });
@@ -1686,7 +1702,7 @@
         state.tzHighlight = Math.max(state.tzHighlight - 1, 0);
         renderTzList();
       } else if (event.key === "Enter") {
-        if (!$("#tz-list").hidden && items[state.tzHighlight]) {
+        if (!$("#tz-list")?.hidden && items[state.tzHighlight]) {
           event.preventDefault();
           selectZone(items[state.tzHighlight]);
         }
@@ -1704,7 +1720,7 @@
     if (state.onDocClick) document.removeEventListener("click", state.onDocClick);
     state.onDocClick = (event) => {
       const target = event.target instanceof Element ? event.target : event.target.parentElement;
-      if (!target || !target.closest(".combo")) {
+      if (!target?.closest(".combo")) {
         const list = document.getElementById("tz-list");
         if (list) list.hidden = true;
       }
@@ -1947,7 +1963,7 @@
     if (el) mount(el);
   };
   const current = document.currentScript;
-  const fromReact = Boolean(current && current.dataset && current.dataset.tfc === "1");
+  const fromReact = Boolean(current?.dataset?.tfc === "1");
   if (!fromReact) {
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
     else boot();
