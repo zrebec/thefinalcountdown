@@ -1680,7 +1680,20 @@
       });
       return;
     }
-    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+    const hadController = Boolean(navigator.serviceWorker.controller);
+    navigator.serviceWorker.addEventListener(
+      "controllerchange",
+      () => {
+        if (hadController) location.reload();
+      },
+      { once: true },
+    );
+    navigator.serviceWorker
+      .register("./service-worker.js", { updateViaCache: "none" })
+      .then((reg) => {
+        reg.update();
+      })
+      .catch(() => {});
   }
 
   const SEED_EVENTS = [
@@ -1763,7 +1776,7 @@
   }
 
   async function loadStaticEvents() {
-    const urls = ["static-events.json?v=tfc12"];
+    const urls = ["static-events.json?v=tfc13"];
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "reload" });
