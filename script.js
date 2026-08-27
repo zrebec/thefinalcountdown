@@ -1776,7 +1776,7 @@
   }
 
   async function loadStaticEvents() {
-    const urls = ["static-events.json?v=tfc13"];
+    const urls = ["static-events.json?v=tfc15"];
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "reload" });

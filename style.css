@@ -869,6 +869,17 @@ body {
   flex: none;
 }
 
+@media (max-width: 719px) {
+  .static-toggle {
+    min-height: 36px;
+    padding: 4px 0;
+    gap: 8px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+}
+
 .events:not(.is-past-view) tr.is-user .event-name {
   font-weight: 700;
   color: var(--fg);
