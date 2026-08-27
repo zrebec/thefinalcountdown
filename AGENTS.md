@@ -31,7 +31,7 @@ Separate groups in `static-events.json` (already: `id`, `name`, `color`, `events
 Further calendars, in order:
 
 1. **Speculation** — Grok 5, Claude, BTC $100k… (still a single time point).
-2. **Name days** — yearly.
+2. **Name days** — done as a yearly lookup (`namedays-sk.json`), not list cards.
 3. **Birthdays** — yearly.
 4. Others (F1 already exists).
 
@@ -71,6 +71,33 @@ Native (Capacitor + store) only when we need:
 - tvOS / always-on iPad as a “house display” with fan-out notifications.
 
 Later debate: Web Notification on an open tab vs Web Push + service worker.
+
+### CI/CD releasing
+
+Worth a **light** GitHub Action later: on merge to `main`, deploy GitHub Pages (or keep Pages-from-branch). Optional PR check: `node --check script.js`. No npm publish. The `?v=tfcN` cache bump stays manual until filenames are hashed.
+
+### Protect `main` on GitHub
+
+Already using merge requests. In the repo: **Settings → Rulesets** (or classic branch protection) for `main`:
+
+1. Require a pull request (no direct pushes).
+2. Block force-push and deletion of `main`.
+3. Solo: allow the author to merge their own PR; require a review only if a second person exists.
+4. Later: require status checks once CI exists.
+
+Administrators can still bypass unless “include administrators” is on.
+
+### Split `style.css` / `script.js`?
+
+**Not at current size** (~900 / ~1850 lines). One file is atomic with a single `?v=` (the whole script arrives or none does). Many files help HTTP/2 parallel fetch and per-file cache, but the service worker list grows and a single 404 can mix old JS with new CSS. If we ever split, use **one ES module entry** (`<script type="module">` + `import`), not several classic `<script>` tags. Trigger: tests per module, TypeScript, or a file past ~3–4k lines. A future `themes.css` can exist without chopping layout CSS.
+
+### CSS themes (Catppuccin, Rosé Pine, Tokyo Night, …)
+
+Current `:root` is already a palette (closest public cousin: **Catppuccin Mocha**). `[data-theme]` maps for `--bg` / `--accent` / `--ok` would be S–M and can matter a lot on a home-screen PWA. Status bar `theme-color`, apple-touch icons, and `hourglass.jpg` would **not** follow unless we update them too. After calendar filters, not instead of product work.
+
+### TypeScript?
+
+Medium difficulty: the IIFE has to become modules or a bundler appears. Effort M–L for a first conversion, then a small tax on every edit. Type risk is low; **PWA/SW/path risk is medium** if Vite/esbuild is added. Cheaper 80%: `// @ts-check` plus JSDoc on `state` and events, still no build. Full TS is not next.
 
 ## Event schema (current)
 
