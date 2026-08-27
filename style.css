@@ -162,6 +162,22 @@ body {
   text-wrap: balance;
 }
 
+.namedays {
+  margin: 0 0 8px;
+  min-height: 1.2em;
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.namedays-name {
+  font-weight: 700;
+  color: var(--fg-muted);
+}
+
 .panel {
   display: none;
 }
@@ -789,7 +805,7 @@ body {
   }
 
   .form {
-    padding: 0 0 8px;
+    padding: 12px 14px 16px;
     overflow-x: hidden;
   }
 

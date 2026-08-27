@@ -81,6 +81,7 @@
             <h1 class="brand-title">The Final Countdown</h1>
           </div>
         </header>
+        <p class="namedays" id="namedays-line" hidden></p>
 
         <nav class="tabbar" aria-label="Hlavná navigácia">
           <button type="button" class="tab" data-nav="list" aria-current="page">${ICON.list}<span>Odpočty</span></button>
@@ -265,6 +266,8 @@
     draftLock: false,
     draftTimer: null,
     formClean: null,
+    namedayMap: null,
+    namedayWall: "",
   };
 
   function $(sel, root = state.root) {
@@ -762,7 +765,56 @@
       .join("");
   }
 
+  const NAMEDAY_TZ = "Europe/Bratislava";
+  const MONTH_KEYS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+  function namedayKey(dateStr) {
+    const parts = String(dateStr || "").split("-");
+    if (parts.length !== 3) return "";
+    const month = MONTH_KEYS[Number(parts[1]) - 1];
+    const day = Number(parts[2]);
+    if (!month || !day) return "";
+    return `${month}-${day}`;
+  }
+
+  function namedayName(dateStr) {
+    const map = state.namedayMap;
+    if (!map) return "";
+    return map.get(namedayKey(dateStr)) || "";
+  }
+
+  function namedayNameNode(name) {
+    const node = document.createElement("strong");
+    node.className = "namedays-name";
+    node.textContent = name;
+    return node;
+  }
+
+  function renderNamedays() {
+    const el = $("#namedays-line");
+    if (!el) return;
+    const today = formatWall(Date.now(), NAMEDAY_TZ).date;
+    state.namedayWall = today;
+    const todayName = namedayName(today);
+    const tomorrowName = namedayName(nextIsoDate(today));
+    el.replaceChildren();
+    if (!todayName && !tomorrowName) {
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    if (todayName) {
+      el.append("Dnes: ", namedayNameNode(todayName));
+    }
+    if (todayName && tomorrowName) el.append(" · ");
+    if (tomorrowName) {
+      el.append("Zajtra: ", namedayNameNode(tomorrowName));
+    }
+  }
+
   function tick() {
+    const skToday = formatWall(Date.now(), NAMEDAY_TZ).date;
+    if (state.namedayWall !== skToday) renderNamedays();
     if (state.view !== "list") return;
     const now = Date.now();
     const remainNodes = $all("[data-remain]");
@@ -1793,8 +1845,32 @@
     return out;
   }
 
+  function loadNamedayMap(data) {
+    const map = new Map();
+    if (!data || typeof data !== "object" || !Array.isArray(data.namedays)) return map;
+    data.namedays.forEach((row) => {
+      if (!row || typeof row !== "object") return;
+      const month = String(row.month || "").toUpperCase();
+      const day = Number(row.day);
+      const name = String(row.name || "").trim();
+      if (!MONTH_KEYS.includes(month) || day < 1 || day > 31 || !name) return;
+      map.set(`${month}-${day}`, name);
+    });
+    return map;
+  }
+
+  async function loadNamedays() {
+    try {
+      const res = await fetch("namedays-sk.json?v=tfc23", { cache: "reload" });
+      if (!res.ok) return new Map();
+      return loadNamedayMap(await res.json());
+    } catch {
+      return new Map();
+    }
+  }
+
   async function loadStaticEvents() {
-    const urls = ["static-events.json?v=tfc20"];
+    const urls = ["static-events.json?v=tfc23"];
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "reload" });
@@ -1857,6 +1933,10 @@
       state.staticEvents = events;
       syncStaticToggle();
       if (state.view === "list") renderList();
+    });
+    loadNamedays().then((map) => {
+      state.namedayMap = map;
+      renderNamedays();
     });
   }
 

@@ -1,0 +1,1836 @@
+{
+  "version": "tfc-v20",
+  "calendarName": "SK Meniny",
+  "namedays": [
+    {
+      "month": "JAN",
+      "day": 1,
+      "name": "Nový rok"
+    },
+    {
+      "month": "JAN",
+      "day": 2,
+      "name": "Alexandra, Karina"
+    },
+    {
+      "month": "JAN",
+      "day": 3,
+      "name": "Daniela"
+    },
+    {
+      "month": "JAN",
+      "day": 4,
+      "name": "Drahoslav"
+    },
+    {
+      "month": "JAN",
+      "day": 5,
+      "name": "Andrea"
+    },
+    {
+      "month": "JAN",
+      "day": 6,
+      "name": "Antónia"
+    },
+    {
+      "month": "JAN",
+      "day": 7,
+      "name": "Bohuslava"
+    },
+    {
+      "month": "JAN",
+      "day": 8,
+      "name": "Severín"
+    },
+    {
+      "month": "JAN",
+      "day": 9,
+      "name": "Alexej"
+    },
+    {
+      "month": "JAN",
+      "day": 10,
+      "name": "Dáša"
+    },
+    {
+      "month": "JAN",
+      "day": 11,
+      "name": "Malvína"
+    },
+    {
+      "month": "JAN",
+      "day": 12,
+      "name": "Ernest"
+    },
+    {
+      "month": "JAN",
+      "day": 13,
+      "name": "Rastislav"
+    },
+    {
+      "month": "JAN",
+      "day": 14,
+      "name": "Radovan"
+    },
+    {
+      "month": "JAN",
+      "day": 15,
+      "name": "Dobroslav"
+    },
+    {
+      "month": "JAN",
+      "day": 16,
+      "name": "Kristína"
+    },
+    {
+      "month": "JAN",
+      "day": 17,
+      "name": "Nataša"
+    },
+    {
+      "month": "JAN",
+      "day": 18,
+      "name": "Bohdana"
+    },
+    {
+      "month": "JAN",
+      "day": 19,
+      "name": "Drahomíra, Mário"
+    },
+    {
+      "month": "JAN",
+      "day": 20,
+      "name": "Dalibor"
+    },
+    {
+      "month": "JAN",
+      "day": 21,
+      "name": "Vincent"
+    },
+    {
+      "month": "JAN",
+      "day": 22,
+      "name": "Zora"
+    },
+    {
+      "month": "JAN",
+      "day": 23,
+      "name": "Miloš"
+    },
+    {
+      "month": "JAN",
+      "day": 24,
+      "name": "Timotej"
+    },
+    {
+      "month": "JAN",
+      "day": 25,
+      "name": "Gejza"
+    },
+    {
+      "month": "JAN",
+      "day": 26,
+      "name": "Tamara"
+    },
+    {
+      "month": "JAN",
+      "day": 27,
+      "name": "Bohuš"
+    },
+    {
+      "month": "JAN",
+      "day": 28,
+      "name": "Alfonz"
+    },
+    {
+      "month": "JAN",
+      "day": 29,
+      "name": "Gašpar"
+    },
+    {
+      "month": "JAN",
+      "day": 30,
+      "name": "Ema"
+    },
+    {
+      "month": "JAN",
+      "day": 31,
+      "name": "Emil"
+    },
+    {
+      "month": "FEB",
+      "day": 1,
+      "name": "Tatiana"
+    },
+    {
+      "month": "FEB",
+      "day": 2,
+      "name": "Erika, Erik"
+    },
+    {
+      "month": "FEB",
+      "day": 3,
+      "name": "Blažej"
+    },
+    {
+      "month": "FEB",
+      "day": 4,
+      "name": "Veronika"
+    },
+    {
+      "month": "FEB",
+      "day": 5,
+      "name": "Agáta"
+    },
+    {
+      "month": "FEB",
+      "day": 6,
+      "name": "Dorota"
+    },
+    {
+      "month": "FEB",
+      "day": 7,
+      "name": "Vanda"
+    },
+    {
+      "month": "FEB",
+      "day": 8,
+      "name": "Zoja"
+    },
+    {
+      "month": "FEB",
+      "day": 9,
+      "name": "Zdenko"
+    },
+    {
+      "month": "FEB",
+      "day": 10,
+      "name": "Gabriela"
+    },
+    {
+      "month": "FEB",
+      "day": 11,
+      "name": "Dezider"
+    },
+    {
+      "month": "FEB",
+      "day": 12,
+      "name": "Perla"
+    },
+    {
+      "month": "FEB",
+      "day": 13,
+      "name": "Arpád"
+    },
+    {
+      "month": "FEB",
+      "day": 14,
+      "name": "Valentín"
+    },
+    {
+      "month": "FEB",
+      "day": 15,
+      "name": "Pravoslav"
+    },
+    {
+      "month": "FEB",
+      "day": 16,
+      "name": "Ida, Liana"
+    },
+    {
+      "month": "FEB",
+      "day": 17,
+      "name": "Miloslava"
+    },
+    {
+      "month": "FEB",
+      "day": 18,
+      "name": "Jaromír"
+    },
+    {
+      "month": "FEB",
+      "day": 19,
+      "name": "Vlasta"
+    },
+    {
+      "month": "FEB",
+      "day": 20,
+      "name": "Lívia"
+    },
+    {
+      "month": "FEB",
+      "day": 21,
+      "name": "Eleonóra"
+    },
+    {
+      "month": "FEB",
+      "day": 22,
+      "name": "Etela"
+    },
+    {
+      "month": "FEB",
+      "day": 23,
+      "name": "Roman, Romana"
+    },
+    {
+      "month": "FEB",
+      "day": 24,
+      "name": "Matej"
+    },
+    {
+      "month": "FEB",
+      "day": 25,
+      "name": "Frederik, Frederika"
+    },
+    {
+      "month": "FEB",
+      "day": 26,
+      "name": "Viktor"
+    },
+    {
+      "month": "FEB",
+      "day": 27,
+      "name": "Alexander"
+    },
+    {
+      "month": "FEB",
+      "day": 28,
+      "name": "Zlatica"
+    },
+    {
+      "month": "FEB",
+      "day": 29,
+      "name": "Radomír"
+    },
+    {
+      "month": "MAR",
+      "day": 1,
+      "name": "Albín"
+    },
+    {
+      "month": "MAR",
+      "day": 2,
+      "name": "Anežka"
+    },
+    {
+      "month": "MAR",
+      "day": 3,
+      "name": "Bohumil, Bohumila"
+    },
+    {
+      "month": "MAR",
+      "day": 4,
+      "name": "Kazimír"
+    },
+    {
+      "month": "MAR",
+      "day": 5,
+      "name": "Fridrich"
+    },
+    {
+      "month": "MAR",
+      "day": 6,
+      "name": "Radoslav, Radoslava"
+    },
+    {
+      "month": "MAR",
+      "day": 7,
+      "name": "Tomáš"
+    },
+    {
+      "month": "MAR",
+      "day": 8,
+      "name": "Alan, Alana"
+    },
+    {
+      "month": "MAR",
+      "day": 9,
+      "name": "Františka"
+    },
+    {
+      "month": "MAR",
+      "day": 10,
+      "name": "Bruno, Branislav"
+    },
+    {
+      "month": "MAR",
+      "day": 11,
+      "name": "Angela, Angelika"
+    },
+    {
+      "month": "MAR",
+      "day": 12,
+      "name": "Gregor"
+    },
+    {
+      "month": "MAR",
+      "day": 13,
+      "name": "Vlastimil"
+    },
+    {
+      "month": "MAR",
+      "day": 14,
+      "name": "Matilda"
+    },
+    {
+      "month": "MAR",
+      "day": 15,
+      "name": "Svetlana"
+    },
+    {
+      "month": "MAR",
+      "day": 16,
+      "name": "Boleslav"
+    },
+    {
+      "month": "MAR",
+      "day": 17,
+      "name": "Ľubica"
+    },
+    {
+      "month": "MAR",
+      "day": 18,
+      "name": "Eduard"
+    },
+    {
+      "month": "MAR",
+      "day": 19,
+      "name": "Jozef"
+    },
+    {
+      "month": "MAR",
+      "day": 20,
+      "name": "Víťazoslav, Klaudius"
+    },
+    {
+      "month": "MAR",
+      "day": 21,
+      "name": "Blahoslav"
+    },
+    {
+      "month": "MAR",
+      "day": 22,
+      "name": "Beňadik"
+    },
+    {
+      "month": "MAR",
+      "day": 23,
+      "name": "Adrián"
+    },
+    {
+      "month": "MAR",
+      "day": 24,
+      "name": "Gabriel"
+    },
+    {
+      "month": "MAR",
+      "day": 25,
+      "name": "Marián"
+    },
+    {
+      "month": "MAR",
+      "day": 26,
+      "name": "Emanuel"
+    },
+    {
+      "month": "MAR",
+      "day": 27,
+      "name": "Alena"
+    },
+    {
+      "month": "MAR",
+      "day": 28,
+      "name": "Soňa"
+    },
+    {
+      "month": "MAR",
+      "day": 29,
+      "name": "Miroslav"
+    },
+    {
+      "month": "MAR",
+      "day": 30,
+      "name": "Vieroslava"
+    },
+    {
+      "month": "MAR",
+      "day": 31,
+      "name": "Benjamín"
+    },
+    {
+      "month": "APR",
+      "day": 1,
+      "name": "Hugo"
+    },
+    {
+      "month": "APR",
+      "day": 2,
+      "name": "Zita"
+    },
+    {
+      "month": "APR",
+      "day": 3,
+      "name": "Richard"
+    },
+    {
+      "month": "APR",
+      "day": 4,
+      "name": "Izidor"
+    },
+    {
+      "month": "APR",
+      "day": 5,
+      "name": "Miroslava"
+    },
+    {
+      "month": "APR",
+      "day": 6,
+      "name": "Irena"
+    },
+    {
+      "month": "APR",
+      "day": 7,
+      "name": "Zoltán"
+    },
+    {
+      "month": "APR",
+      "day": 8,
+      "name": "Albert"
+    },
+    {
+      "month": "APR",
+      "day": 9,
+      "name": "Milena"
+    },
+    {
+      "month": "APR",
+      "day": 10,
+      "name": "Igor"
+    },
+    {
+      "month": "APR",
+      "day": 11,
+      "name": "Július"
+    },
+    {
+      "month": "APR",
+      "day": 12,
+      "name": "Estera"
+    },
+    {
+      "month": "APR",
+      "day": 13,
+      "name": "Aleš"
+    },
+    {
+      "month": "APR",
+      "day": 14,
+      "name": "Justina"
+    },
+    {
+      "month": "APR",
+      "day": 15,
+      "name": "Fedor"
+    },
+    {
+      "month": "APR",
+      "day": 16,
+      "name": "Dana, Danica"
+    },
+    {
+      "month": "APR",
+      "day": 17,
+      "name": "Rudolf, Rudolfa"
+    },
+    {
+      "month": "APR",
+      "day": 18,
+      "name": "Valér"
+    },
+    {
+      "month": "APR",
+      "day": 19,
+      "name": "Jela"
+    },
+    {
+      "month": "APR",
+      "day": 20,
+      "name": "Marcel"
+    },
+    {
+      "month": "APR",
+      "day": 21,
+      "name": "Ervín"
+    },
+    {
+      "month": "APR",
+      "day": 22,
+      "name": "Slavomír"
+    },
+    {
+      "month": "APR",
+      "day": 23,
+      "name": "Vojtech"
+    },
+    {
+      "month": "APR",
+      "day": 24,
+      "name": "Juraj"
+    },
+    {
+      "month": "APR",
+      "day": 25,
+      "name": "Marek"
+    },
+    {
+      "month": "APR",
+      "day": 26,
+      "name": "Jaroslava"
+    },
+    {
+      "month": "APR",
+      "day": 27,
+      "name": "Jaroslav"
+    },
+    {
+      "month": "APR",
+      "day": 28,
+      "name": "Jarmila"
+    },
+    {
+      "month": "APR",
+      "day": 29,
+      "name": "Lea"
+    },
+    {
+      "month": "APR",
+      "day": 30,
+      "name": "Anastázia"
+    },
+    {
+      "month": "MAY",
+      "day": 1,
+      "name": "Sviatok práce"
+    },
+    {
+      "month": "MAY",
+      "day": 2,
+      "name": "Žigmund"
+    },
+    {
+      "month": "MAY",
+      "day": 3,
+      "name": "Galina, Timea"
+    },
+    {
+      "month": "MAY",
+      "day": 4,
+      "name": "Florián"
+    },
+    {
+      "month": "MAY",
+      "day": 5,
+      "name": "Lesia, Lesana"
+    },
+    {
+      "month": "MAY",
+      "day": 6,
+      "name": "Hermína"
+    },
+    {
+      "month": "MAY",
+      "day": 7,
+      "name": "Monika"
+    },
+    {
+      "month": "MAY",
+      "day": 8,
+      "name": "Ingrida"
+    },
+    {
+      "month": "MAY",
+      "day": 9,
+      "name": "Roland"
+    },
+    {
+      "month": "MAY",
+      "day": 10,
+      "name": "Viktória"
+    },
+    {
+      "month": "MAY",
+      "day": 11,
+      "name": "Blažena"
+    },
+    {
+      "month": "MAY",
+      "day": 12,
+      "name": "Pankrác"
+    },
+    {
+      "month": "MAY",
+      "day": 13,
+      "name": "Servác"
+    },
+    {
+      "month": "MAY",
+      "day": 14,
+      "name": "Bonifác"
+    },
+    {
+      "month": "MAY",
+      "day": 15,
+      "name": "Žofia, Sofia"
+    },
+    {
+      "month": "MAY",
+      "day": 16,
+      "name": "Svetozár"
+    },
+    {
+      "month": "MAY",
+      "day": 17,
+      "name": "Gizela, Aneta"
+    },
+    {
+      "month": "MAY",
+      "day": 18,
+      "name": "Viola"
+    },
+    {
+      "month": "MAY",
+      "day": 19,
+      "name": "Gertrúda"
+    },
+    {
+      "month": "MAY",
+      "day": 20,
+      "name": "Bernard"
+    },
+    {
+      "month": "MAY",
+      "day": 21,
+      "name": "Zina"
+    },
+    {
+      "month": "MAY",
+      "day": 22,
+      "name": "Júlia, Juliana"
+    },
+    {
+      "month": "MAY",
+      "day": 23,
+      "name": "Želmíra"
+    },
+    {
+      "month": "MAY",
+      "day": 24,
+      "name": "Ela"
+    },
+    {
+      "month": "MAY",
+      "day": 25,
+      "name": "Urban, Vivien"
+    },
+    {
+      "month": "MAY",
+      "day": 26,
+      "name": "Dušan"
+    },
+    {
+      "month": "MAY",
+      "day": 27,
+      "name": "Iveta"
+    },
+    {
+      "month": "MAY",
+      "day": 28,
+      "name": "Viliam"
+    },
+    {
+      "month": "MAY",
+      "day": 29,
+      "name": "Vilma"
+    },
+    {
+      "month": "MAY",
+      "day": 30,
+      "name": "Ferdinand"
+    },
+    {
+      "month": "MAY",
+      "day": 31,
+      "name": "Petrana, Petronela"
+    },
+    {
+      "month": "JUN",
+      "day": 1,
+      "name": "Žaneta"
+    },
+    {
+      "month": "JUN",
+      "day": 2,
+      "name": "Xénia, Oxana"
+    },
+    {
+      "month": "JUN",
+      "day": 3,
+      "name": "Karolína"
+    },
+    {
+      "month": "JUN",
+      "day": 4,
+      "name": "Lenka"
+    },
+    {
+      "month": "JUN",
+      "day": 5,
+      "name": "Laura"
+    },
+    {
+      "month": "JUN",
+      "day": 6,
+      "name": "Norbert"
+    },
+    {
+      "month": "JUN",
+      "day": 7,
+      "name": "Róbert, Róberta"
+    },
+    {
+      "month": "JUN",
+      "day": 8,
+      "name": "Medard"
+    },
+    {
+      "month": "JUN",
+      "day": 9,
+      "name": "Stanislava"
+    },
+    {
+      "month": "JUN",
+      "day": 10,
+      "name": "Margaréta, Gréta"
+    },
+    {
+      "month": "JUN",
+      "day": 11,
+      "name": "Dobroslava"
+    },
+    {
+      "month": "JUN",
+      "day": 12,
+      "name": "Zlatko"
+    },
+    {
+      "month": "JUN",
+      "day": 13,
+      "name": "Anton"
+    },
+    {
+      "month": "JUN",
+      "day": 14,
+      "name": "Vasil"
+    },
+    {
+      "month": "JUN",
+      "day": 15,
+      "name": "Vít"
+    },
+    {
+      "month": "JUN",
+      "day": 16,
+      "name": "Blanka, Bianka"
+    },
+    {
+      "month": "JUN",
+      "day": 17,
+      "name": "Adolf"
+    },
+    {
+      "month": "JUN",
+      "day": 18,
+      "name": "Vratislav"
+    },
+    {
+      "month": "JUN",
+      "day": 19,
+      "name": "Alfréd"
+    },
+    {
+      "month": "JUN",
+      "day": 20,
+      "name": "Valéria"
+    },
+    {
+      "month": "JUN",
+      "day": 21,
+      "name": "Alojz"
+    },
+    {
+      "month": "JUN",
+      "day": 22,
+      "name": "Paulína"
+    },
+    {
+      "month": "JUN",
+      "day": 23,
+      "name": "Sidónia"
+    },
+    {
+      "month": "JUN",
+      "day": 24,
+      "name": "Ján"
+    },
+    {
+      "month": "JUN",
+      "day": 25,
+      "name": "Olívia, Tadeáš"
+    },
+    {
+      "month": "JUN",
+      "day": 26,
+      "name": "Adriána"
+    },
+    {
+      "month": "JUN",
+      "day": 27,
+      "name": "Ladislav, Ladislava"
+    },
+    {
+      "month": "JUN",
+      "day": 28,
+      "name": "Beáta"
+    },
+    {
+      "month": "JUN",
+      "day": 29,
+      "name": "Peter, Petra"
+    },
+    {
+      "month": "JUN",
+      "day": 30,
+      "name": "Melánia"
+    },
+    {
+      "month": "JUL",
+      "day": 1,
+      "name": "Diana"
+    },
+    {
+      "month": "JUL",
+      "day": 2,
+      "name": "Berta"
+    },
+    {
+      "month": "JUL",
+      "day": 3,
+      "name": "Miloslav"
+    },
+    {
+      "month": "JUL",
+      "day": 4,
+      "name": "Prokop"
+    },
+    {
+      "month": "JUL",
+      "day": 5,
+      "name": "Cyril, Metod"
+    },
+    {
+      "month": "JUL",
+      "day": 6,
+      "name": "Patrik, Patrícia"
+    },
+    {
+      "month": "JUL",
+      "day": 7,
+      "name": "Oliver"
+    },
+    {
+      "month": "JUL",
+      "day": 8,
+      "name": "Ivan"
+    },
+    {
+      "month": "JUL",
+      "day": 9,
+      "name": "Lujza"
+    },
+    {
+      "month": "JUL",
+      "day": 10,
+      "name": "Amália"
+    },
+    {
+      "month": "JUL",
+      "day": 11,
+      "name": "Milota"
+    },
+    {
+      "month": "JUL",
+      "day": 12,
+      "name": "Nina"
+    },
+    {
+      "month": "JUL",
+      "day": 13,
+      "name": "Margita"
+    },
+    {
+      "month": "JUL",
+      "day": 14,
+      "name": "Kamil"
+    },
+    {
+      "month": "JUL",
+      "day": 15,
+      "name": "Henrich"
+    },
+    {
+      "month": "JUL",
+      "day": 16,
+      "name": "Drahomír, Rút"
+    },
+    {
+      "month": "JUL",
+      "day": 17,
+      "name": "Bohuslav"
+    },
+    {
+      "month": "JUL",
+      "day": 18,
+      "name": "Kamila"
+    },
+    {
+      "month": "JUL",
+      "day": 19,
+      "name": "Dušana"
+    },
+    {
+      "month": "JUL",
+      "day": 20,
+      "name": "Iľja, Eliáš"
+    },
+    {
+      "month": "JUL",
+      "day": 21,
+      "name": "Daniel"
+    },
+    {
+      "month": "JUL",
+      "day": 22,
+      "name": "Magdaléna"
+    },
+    {
+      "month": "JUL",
+      "day": 23,
+      "name": "Oľga"
+    },
+    {
+      "month": "JUL",
+      "day": 24,
+      "name": "Vladimír"
+    },
+    {
+      "month": "JUL",
+      "day": 25,
+      "name": "Jakub, Timur"
+    },
+    {
+      "month": "JUL",
+      "day": 26,
+      "name": "Anna, Anita"
+    },
+    {
+      "month": "JUL",
+      "day": 27,
+      "name": "Božena"
+    },
+    {
+      "month": "JUL",
+      "day": 28,
+      "name": "Krištof"
+    },
+    {
+      "month": "JUL",
+      "day": 29,
+      "name": "Marta"
+    },
+    {
+      "month": "JUL",
+      "day": 30,
+      "name": "Libuša"
+    },
+    {
+      "month": "JUL",
+      "day": 31,
+      "name": "Ignác"
+    },
+    {
+      "month": "AUG",
+      "day": 1,
+      "name": "Božidara"
+    },
+    {
+      "month": "AUG",
+      "day": 2,
+      "name": "Gustáv"
+    },
+    {
+      "month": "AUG",
+      "day": 3,
+      "name": "Jerguš"
+    },
+    {
+      "month": "AUG",
+      "day": 4,
+      "name": "Dominika, Dominik"
+    },
+    {
+      "month": "AUG",
+      "day": 5,
+      "name": "Hortenzia"
+    },
+    {
+      "month": "AUG",
+      "day": 6,
+      "name": "Jozefína"
+    },
+    {
+      "month": "AUG",
+      "day": 7,
+      "name": "Štefánia"
+    },
+    {
+      "month": "AUG",
+      "day": 8,
+      "name": "Oskar"
+    },
+    {
+      "month": "AUG",
+      "day": 9,
+      "name": "Ľubomíra"
+    },
+    {
+      "month": "AUG",
+      "day": 10,
+      "name": "Vavrinec"
+    },
+    {
+      "month": "AUG",
+      "day": 11,
+      "name": "Zuzana"
+    },
+    {
+      "month": "AUG",
+      "day": 12,
+      "name": "Darina"
+    },
+    {
+      "month": "AUG",
+      "day": 13,
+      "name": "Ľubomír"
+    },
+    {
+      "month": "AUG",
+      "day": 14,
+      "name": "Mojmír"
+    },
+    {
+      "month": "AUG",
+      "day": 15,
+      "name": "Marcela"
+    },
+    {
+      "month": "AUG",
+      "day": 16,
+      "name": "Leonard"
+    },
+    {
+      "month": "AUG",
+      "day": 17,
+      "name": "Milica"
+    },
+    {
+      "month": "AUG",
+      "day": 18,
+      "name": "Elena, Helena"
+    },
+    {
+      "month": "AUG",
+      "day": 19,
+      "name": "Lýdia"
+    },
+    {
+      "month": "AUG",
+      "day": 20,
+      "name": "Anabela, Liliana"
+    },
+    {
+      "month": "AUG",
+      "day": 21,
+      "name": "Jana"
+    },
+    {
+      "month": "AUG",
+      "day": 22,
+      "name": "Tichomír"
+    },
+    {
+      "month": "AUG",
+      "day": 23,
+      "name": "Filip"
+    },
+    {
+      "month": "AUG",
+      "day": 24,
+      "name": "Bartolomej"
+    },
+    {
+      "month": "AUG",
+      "day": 25,
+      "name": "Ľudovít"
+    },
+    {
+      "month": "AUG",
+      "day": 26,
+      "name": "Samuel"
+    },
+    {
+      "month": "AUG",
+      "day": 27,
+      "name": "Silvia"
+    },
+    {
+      "month": "AUG",
+      "day": 28,
+      "name": "Augustín"
+    },
+    {
+      "month": "AUG",
+      "day": 29,
+      "name": "Nikola, Nikolaj"
+    },
+    {
+      "month": "AUG",
+      "day": 30,
+      "name": "Ružena"
+    },
+    {
+      "month": "AUG",
+      "day": 31,
+      "name": "Nora"
+    },
+    {
+      "month": "SEP",
+      "day": 1,
+      "name": "Drahoslava"
+    },
+    {
+      "month": "SEP",
+      "day": 2,
+      "name": "Linda, Rebeka"
+    },
+    {
+      "month": "SEP",
+      "day": 3,
+      "name": "Belo"
+    },
+    {
+      "month": "SEP",
+      "day": 4,
+      "name": "Rozália"
+    },
+    {
+      "month": "SEP",
+      "day": 5,
+      "name": "Regina"
+    },
+    {
+      "month": "SEP",
+      "day": 6,
+      "name": "Alica"
+    },
+    {
+      "month": "SEP",
+      "day": 7,
+      "name": "Marianna"
+    },
+    {
+      "month": "SEP",
+      "day": 8,
+      "name": "Miriama"
+    },
+    {
+      "month": "SEP",
+      "day": 9,
+      "name": "Martina"
+    },
+    {
+      "month": "SEP",
+      "day": 10,
+      "name": "Oleg"
+    },
+    {
+      "month": "SEP",
+      "day": 11,
+      "name": "Bystrík"
+    },
+    {
+      "month": "SEP",
+      "day": 12,
+      "name": "Mária, Marlena"
+    },
+    {
+      "month": "SEP",
+      "day": 13,
+      "name": "Ctibor"
+    },
+    {
+      "month": "SEP",
+      "day": 14,
+      "name": "Ľudomil"
+    },
+    {
+      "month": "SEP",
+      "day": 15,
+      "name": "Jolana"
+    },
+    {
+      "month": "SEP",
+      "day": 16,
+      "name": "Ľudmila"
+    },
+    {
+      "month": "SEP",
+      "day": 17,
+      "name": "Olympia"
+    },
+    {
+      "month": "SEP",
+      "day": 18,
+      "name": "Eugénia"
+    },
+    {
+      "month": "SEP",
+      "day": 19,
+      "name": "Konštantín"
+    },
+    {
+      "month": "SEP",
+      "day": 20,
+      "name": "Ľuboslav, Ľuboslava"
+    },
+    {
+      "month": "SEP",
+      "day": 21,
+      "name": "Matúš"
+    },
+    {
+      "month": "SEP",
+      "day": 22,
+      "name": "Móric"
+    },
+    {
+      "month": "SEP",
+      "day": 23,
+      "name": "Zdenka"
+    },
+    {
+      "month": "SEP",
+      "day": 24,
+      "name": "Ľuboš, Ľubor"
+    },
+    {
+      "month": "SEP",
+      "day": 25,
+      "name": "Vladislav, Vladislava"
+    },
+    {
+      "month": "SEP",
+      "day": 26,
+      "name": "Edita"
+    },
+    {
+      "month": "SEP",
+      "day": 27,
+      "name": "Cyprián"
+    },
+    {
+      "month": "SEP",
+      "day": 28,
+      "name": "Václav"
+    },
+    {
+      "month": "SEP",
+      "day": 29,
+      "name": "Michal, Michaela"
+    },
+    {
+      "month": "SEP",
+      "day": 30,
+      "name": "Jarolím"
+    },
+    {
+      "month": "OCT",
+      "day": 1,
+      "name": "Arnold"
+    },
+    {
+      "month": "OCT",
+      "day": 2,
+      "name": "Levoslav"
+    },
+    {
+      "month": "OCT",
+      "day": 3,
+      "name": "Stela"
+    },
+    {
+      "month": "OCT",
+      "day": 4,
+      "name": "František"
+    },
+    {
+      "month": "OCT",
+      "day": 5,
+      "name": "Viera"
+    },
+    {
+      "month": "OCT",
+      "day": 6,
+      "name": "Natália"
+    },
+    {
+      "month": "OCT",
+      "day": 7,
+      "name": "Eliška"
+    },
+    {
+      "month": "OCT",
+      "day": 8,
+      "name": "Brigita"
+    },
+    {
+      "month": "OCT",
+      "day": 9,
+      "name": "Dionýz"
+    },
+    {
+      "month": "OCT",
+      "day": 10,
+      "name": "Slavomíra"
+    },
+    {
+      "month": "OCT",
+      "day": 11,
+      "name": "Valentína"
+    },
+    {
+      "month": "OCT",
+      "day": 12,
+      "name": "Maximilián"
+    },
+    {
+      "month": "OCT",
+      "day": 13,
+      "name": "Koloman"
+    },
+    {
+      "month": "OCT",
+      "day": 14,
+      "name": "Boris"
+    },
+    {
+      "month": "OCT",
+      "day": 15,
+      "name": "Terézia"
+    },
+    {
+      "month": "OCT",
+      "day": 16,
+      "name": "Vladimíra"
+    },
+    {
+      "month": "OCT",
+      "day": 17,
+      "name": "Hedviga"
+    },
+    {
+      "month": "OCT",
+      "day": 18,
+      "name": "Lukáš"
+    },
+    {
+      "month": "OCT",
+      "day": 19,
+      "name": "Kristián"
+    },
+    {
+      "month": "OCT",
+      "day": 20,
+      "name": "Vendelín"
+    },
+    {
+      "month": "OCT",
+      "day": 21,
+      "name": "Uršuľa"
+    },
+    {
+      "month": "OCT",
+      "day": 22,
+      "name": "Sergej"
+    },
+    {
+      "month": "OCT",
+      "day": 23,
+      "name": "Alojzia"
+    },
+    {
+      "month": "OCT",
+      "day": 24,
+      "name": "Kvetoslava"
+    },
+    {
+      "month": "OCT",
+      "day": 25,
+      "name": "Aurel"
+    },
+    {
+      "month": "OCT",
+      "day": 26,
+      "name": "Demeter"
+    },
+    {
+      "month": "OCT",
+      "day": 27,
+      "name": "Sabína"
+    },
+    {
+      "month": "OCT",
+      "day": 28,
+      "name": "Dobromila"
+    },
+    {
+      "month": "OCT",
+      "day": 29,
+      "name": "Klára"
+    },
+    {
+      "month": "OCT",
+      "day": 30,
+      "name": "Šimon, Simona"
+    },
+    {
+      "month": "OCT",
+      "day": 31,
+      "name": "Aurélia"
+    },
+    {
+      "month": "NOV",
+      "day": 1,
+      "name": "Denis, Denisa"
+    },
+    {
+      "month": "NOV",
+      "day": 2,
+      "name": "Pamiatka zosnulých"
+    },
+    {
+      "month": "NOV",
+      "day": 3,
+      "name": "Hubert"
+    },
+    {
+      "month": "NOV",
+      "day": 4,
+      "name": "Karol"
+    },
+    {
+      "month": "NOV",
+      "day": 5,
+      "name": "Imrich"
+    },
+    {
+      "month": "NOV",
+      "day": 6,
+      "name": "Renáta"
+    },
+    {
+      "month": "NOV",
+      "day": 7,
+      "name": "René"
+    },
+    {
+      "month": "NOV",
+      "day": 8,
+      "name": "Bohumír"
+    },
+    {
+      "month": "NOV",
+      "day": 9,
+      "name": "Teodor"
+    },
+    {
+      "month": "NOV",
+      "day": 10,
+      "name": "Tibor"
+    },
+    {
+      "month": "NOV",
+      "day": 11,
+      "name": "Martin, Maroš"
+    },
+    {
+      "month": "NOV",
+      "day": 12,
+      "name": "Svätopluk"
+    },
+    {
+      "month": "NOV",
+      "day": 13,
+      "name": "Stanislav"
+    },
+    {
+      "month": "NOV",
+      "day": 14,
+      "name": "Irma"
+    },
+    {
+      "month": "NOV",
+      "day": 15,
+      "name": "Leopold"
+    },
+    {
+      "month": "NOV",
+      "day": 16,
+      "name": "Agnesa"
+    },
+    {
+      "month": "NOV",
+      "day": 17,
+      "name": "Klaudia"
+    },
+    {
+      "month": "NOV",
+      "day": 18,
+      "name": "Eugen"
+    },
+    {
+      "month": "NOV",
+      "day": 19,
+      "name": "Alžbeta"
+    },
+    {
+      "month": "NOV",
+      "day": 20,
+      "name": "Félix"
+    },
+    {
+      "month": "NOV",
+      "day": 21,
+      "name": "Elvíra"
+    },
+    {
+      "month": "NOV",
+      "day": 22,
+      "name": "Cecília"
+    },
+    {
+      "month": "NOV",
+      "day": 23,
+      "name": "Klement"
+    },
+    {
+      "month": "NOV",
+      "day": 24,
+      "name": "Emília"
+    },
+    {
+      "month": "NOV",
+      "day": 25,
+      "name": "Katarína"
+    },
+    {
+      "month": "NOV",
+      "day": 26,
+      "name": "Kornel"
+    },
+    {
+      "month": "NOV",
+      "day": 27,
+      "name": "Milan"
+    },
+    {
+      "month": "NOV",
+      "day": 28,
+      "name": "Henrieta"
+    },
+    {
+      "month": "NOV",
+      "day": 29,
+      "name": "Vratko"
+    },
+    {
+      "month": "NOV",
+      "day": 30,
+      "name": "Ondrej, Andrej"
+    },
+    {
+      "month": "DEC",
+      "day": 1,
+      "name": "Edmund"
+    },
+    {
+      "month": "DEC",
+      "day": 2,
+      "name": "Bibiána"
+    },
+    {
+      "month": "DEC",
+      "day": 3,
+      "name": "Oldrich"
+    },
+    {
+      "month": "DEC",
+      "day": 4,
+      "name": "Barbora, Barbara"
+    },
+    {
+      "month": "DEC",
+      "day": 5,
+      "name": "Oto"
+    },
+    {
+      "month": "DEC",
+      "day": 6,
+      "name": "Mikuláš"
+    },
+    {
+      "month": "DEC",
+      "day": 7,
+      "name": "Ambróz"
+    },
+    {
+      "month": "DEC",
+      "day": 8,
+      "name": "Marína"
+    },
+    {
+      "month": "DEC",
+      "day": 9,
+      "name": "Izabela"
+    },
+    {
+      "month": "DEC",
+      "day": 10,
+      "name": "Radúz"
+    },
+    {
+      "month": "DEC",
+      "day": 11,
+      "name": "Hilda"
+    },
+    {
+      "month": "DEC",
+      "day": 12,
+      "name": "Otília"
+    },
+    {
+      "month": "DEC",
+      "day": 13,
+      "name": "Lucia"
+    },
+    {
+      "month": "DEC",
+      "day": 14,
+      "name": "Branislava, Bronislava"
+    },
+    {
+      "month": "DEC",
+      "day": 15,
+      "name": "Ivica"
+    },
+    {
+      "month": "DEC",
+      "day": 16,
+      "name": "Albína"
+    },
+    {
+      "month": "DEC",
+      "day": 17,
+      "name": "Kornélia"
+    },
+    {
+      "month": "DEC",
+      "day": 18,
+      "name": "Sláva"
+    },
+    {
+      "month": "DEC",
+      "day": 19,
+      "name": "Judita"
+    },
+    {
+      "month": "DEC",
+      "day": 20,
+      "name": "Dagmara"
+    },
+    {
+      "month": "DEC",
+      "day": 21,
+      "name": "Bohdan"
+    },
+    {
+      "month": "DEC",
+      "day": 22,
+      "name": "Adela"
+    },
+    {
+      "month": "DEC",
+      "day": 23,
+      "name": "Nadežda"
+    },
+    {
+      "month": "DEC",
+      "day": 24,
+      "name": "Adam, Eva"
+    },
+    {
+      "month": "DEC",
+      "day": 25,
+      "name": "Prvý sviatok vianočný"
+    },
+    {
+      "month": "DEC",
+      "day": 26,
+      "name": "Štefan"
+    },
+    {
+      "month": "DEC",
+      "day": 27,
+      "name": "Filoména"
+    },
+    {
+      "month": "DEC",
+      "day": 28,
+      "name": "Ivana, Ivona"
+    },
+    {
+      "month": "DEC",
+      "day": 29,
+      "name": "Milada"
+    },
+    {
+      "month": "DEC",
+      "day": 30,
+      "name": "Dávid"
+    },
+    {
+      "month": "DEC",
+      "day": 31,
+      "name": "Silvester"
+    }
+  ]
+}
